@@ -7,6 +7,33 @@ struct ITEMS
 	string itemName;
 	float price;
 };
+
+
+int kartof(int kartof) {
+	return kartof;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 struct USER
 {
 	string username;
@@ -34,6 +61,7 @@ int login() {
 	default:
 		break;
 	}
+	return 0;
 }
 int main()
 {
