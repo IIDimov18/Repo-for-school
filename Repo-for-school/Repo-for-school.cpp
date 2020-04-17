@@ -68,11 +68,19 @@ int getItemIndexById(ITEM* items, int& itemCount, int id)
 	return -1;
 }
 
-/* void initItems()
+void initItems(ITEM* items, int& itemCount, int& maxId) 
 {
-
+	createItem(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" }, maxId);
+	createItem(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" }, maxId);
+	createItem(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " }, maxId);
+	createItem(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " }, maxId);
+	createItem(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " }, maxId);
+	createItem(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " }, maxId);
+	createItem(items, itemCount, { "John", "Fridge", 178, "2x1" }, maxId);
+	createItem(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" }, maxId);
+	createItem(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" }, maxId);
+	createItem(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
 }
-*/
 
 
 int main()
