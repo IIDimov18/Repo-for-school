@@ -3,47 +3,25 @@
 using namespace std;
 
 
-struct ITEMS
+struct ITEM
 {
-	string user;
-	string itemName;
-	float price;
-	int quantity;
+	string seller = "";
+	string itemName = "";
+	float price = 0;
+	string description = "";
+	int id = 0;
 };
-
-
-int kartof(int kartof) {
-	return kartof;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 struct USER
 {
-	string username;
-	string password;
-	int countOfItemsForSell;
-	ITEMS itemsForSale[];
+	string username = "";
+	string password = "";
+	int countOfItemsForSell = 0;
+	// ITEM itemsForSale[];
+	int id = 0;
 };
+
+
 /*int login() {
 	int choice;
 	string username, password;
@@ -56,10 +34,10 @@ struct USER
 	switch (choice)
 	{
 	case 1:
-		
+
 		break;
 	case 2:
-		
+
 		break;
 	default:
 		break;
@@ -68,7 +46,38 @@ struct USER
 }
 */
 
+void createItem(ITEM* items, int& orderCount, ITEM newItem, int& maxId)
+{
+	newItem.id = maxId;
+	items[orderCount] = newItem;
+
+	orderCount++;
+	maxId++;
+}
+
+int getItemIndexById(ITEM* items, int& itemCount, int id)
+{
+	for (int index = 0; index < itemCount; index++)
+	{
+		if (items[index].id == id) // check 
+		{
+			return index;
+		}
+	}
+
+	return -1;
+}
+
+/* void initItems()
+{
+
+}
+*/
+
+
 int main()
 {
-	cout << "TEST";
+	int itemCount = 0;
+	int maxId = 1;
+	ITEM items[200];
 }
