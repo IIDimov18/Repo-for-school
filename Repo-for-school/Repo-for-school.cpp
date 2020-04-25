@@ -1,5 +1,8 @@
 ﻿#include <iostream>
 #include <string>
+#include <fstream>
+#include <stdio.h>
+#include <string.h>
 using namespace std;
 
 
@@ -45,7 +48,85 @@ struct USER
 	return 0;
 }
 */
+//Admincho,rootcho,1
+//Admin1, root1, 0
+//Admin2, root2, 1
+//Admin3, root3, 0
+//Admin4, root4, 1
 
+string checkAcc(string username,string password) {
+	ifstream myfile("acc.txt");
+	string line[20];
+	int counter=0,checkCounter=0;
+	if (myfile.is_open())
+	{
+		while (myfile.good())
+		{
+			getline(myfile, line[0], ',');
+			if (line[0]==username)
+			{
+				getline(myfile, line[1], ',');
+				if (line[1]==password)
+				{
+					getline(myfile, line[2], ',');
+					return line[2];
+				}
+				else
+				{
+
+				}
+			}
+			else
+			{
+				getline(myfile, line[3]);
+			}
+		}
+		myfile.close();
+	}
+	return "DEF";
+}
+void login() {
+	string username, password;
+	char character;
+	cout << "Do you have existing account[Y/N]: ";
+	cin >> character;
+	if (character=='Y')
+	{
+		cout << "Username: ";
+		cin >> username;
+		cout <<endl<< "Password: ";
+		cin >> password;
+		cout<<checkAcc(username, password);
+	}
+	else
+	{
+		
+	}
+}
+void Menu() {
+	char input;
+	bool whileCheck = true;
+	cout << "Menu:" << endl << "1. Login" << endl << "2. Register" << endl << "3. Show Offers";
+	cin >> input;
+	while (whileCheck)
+	{
+		switch (input)
+		{
+		case '1':
+			login();
+			whileCheck = false;
+			break;
+		case '2':
+			whileCheck = false;
+			break;
+		case '3':
+			whileCheck = false;
+			break;
+		default:
+			break;
+		}
+	}
+}
 void createItem(ITEM* items, int& orderCount, ITEM newItem, int& maxId)
 {
 	newItem.id = maxId;
@@ -81,11 +162,38 @@ void initItems(ITEM* items, int& itemCount, int& maxId)
 	createItem(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" }, maxId);
 	createItem(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
 }
-
+//void split(char character, string& arr,string stringToSplit) {
+//	char help[30];
+//	int counter = 0, arrCounter = 0;;
+//	for (int i = 0; i < stringToSplit.length(); i++)
+//	{
+//		if (stringToSplit[i]==character)
+//		{
+//			arr[counter++] = help;
+//		}
+//		else
+//		{
+//			help[counter++] = stringToSplit[i];
+//		}
+//	}
+//}
 
 int main()
 {
 	int itemCount = 0;
 	int maxId = 1;
 	ITEM items[200];
+	/*string line;
+	ifstream myfile("data.txt");
+	if (myfile.is_open())
+	{
+		while (myfile.good())
+		{
+			getline(myfile, line);
+			cout << line << endl;
+		}
+		myfile.close();
+	}*/
+	Menu();
+	return 0;
 }
