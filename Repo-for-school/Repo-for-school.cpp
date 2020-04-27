@@ -1,10 +1,10 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
-using namespace std;
 
+using namespace std;
 
 struct ITEM
 {
@@ -36,10 +36,8 @@ struct USER
 	switch (choice)
 	{
 	case 1:
-
 		break;
 	case 2:
-
 		break;
 	default:
 		break;
@@ -53,7 +51,8 @@ struct USER
 //Admin3, root3, 0
 //Admin4, root4, 1
 
-string checkAcc(string username,string password) {
+string checkAcc(string username,string password)
+{
 	ifstream myfile("acc.txt");
 	string line[20];
 	int counter=0,checkCounter=0;
@@ -72,7 +71,7 @@ string checkAcc(string username,string password) {
 				}
 				else
 				{
-
+          cout<< "Invalid account!" <<endl;
 				}
 			}
 			else
@@ -84,54 +83,47 @@ string checkAcc(string username,string password) {
 	}
 	return "DEF";
 }
-void login() {
-	string username, password;
-	char character;
-	cout << "Do you have existing account[Y/N]: ";
-	cin >> character;
-	if (character=='Y')
-	{
+
+
+void Register() {
+  ofstream myfile("acc.txt");
+	string username, password, c_password;
+	cout << endl;
+  
+		cout << "___________________________________________________" << endl;
+		cout << endl;
+		cout << "               |===== Register =====|\n\n" << endl;
 		cout << "Username: ";
 		cin >> username;
-		cout <<endl<< "Password: ";
+		cout << "Password: ";
 		cin >> password;
-		cout<<checkAcc(username, password);
-	}
-	else
-	{
-		
-	}
+    cout << "Confirm password: ";
+		cin >> c_password;
+
+    while(c_password != password)
+    {
+      cout<< "\nInvalid confirm password, please enter confirm pass again: "; cin >> c_password;
+    }
+    
+		cout << endl;
+    myfile << username << "," << password <<endl;
+    myfile.close();
 }
-void Menu() {
-	char input;
-	bool whileCheck = true;
-	cout << "Menu:" << endl << "1. Login" << endl << "2. Register" << endl << "3. Show Offers";
-	cin >> input;
-	while (whileCheck)
-	{
-		switch (input)
-		{
-		case '1':
-			login();
-			whileCheck = false;
-			break;
-		case '2':
-			whileCheck = false;
-			break;
-		case '3':
-			whileCheck = false;
-			break;
-		default:
-			break;
-		}
-	}
-}
+
 void login() {
 	string username, password;
 	char character;
 	cout << "Do you have existing account[Y/N]: ";
 	cin >> character;
 	cout << endl;
+
+  while(character != 'Y' && character != 'N'){
+
+    cout<< "Invalid option, try again: ";
+    cin >> character;
+
+  }
+
 	if (character == 'Y')
 	{
 		cout << "___________________________________________________" << endl;
@@ -144,12 +136,14 @@ void login() {
 		cout << endl;
 		cout << checkAcc(username, password);
 	}
-	else
+	else if(character == 'N')
 	{
-
+    cout<<"Please first register before login!"<<endl;
+    Register();
 	}
 }
-void Menu() {
+
+bool Menu() {
 	char input;
 	bool whileCheck = true;
 
@@ -169,22 +163,28 @@ void Menu() {
 		switch (input)
 		{
 		case '1':
-			login();
-			whileCheck = false;
+			login(); return false;
 			break;
 		case '2':
-			whileCheck = false;
+      Register(); return true;
 			break;
 		case '3':
 			whileCheck = false;
 		case '9':
 			whileCheck = false;
 			break;
-		default:
-			break;
+		default: while(input != '1' && input != '2' && input != '3' && input != '9')
+    {
+        cout<< "Invalid option, try again: ";
+        cin >> input;
+        cout<<endl; 
+    }
+      break;
 		}
 	}
+   return true;
 }
+
 void createItem(ITEM* items, int& orderCount, ITEM newItem)
 {
 	items[orderCount] = newItem;
@@ -251,6 +251,6 @@ int main()
 		}
 		myfile.close();
 	}*/
-	//Menu();
+	Menu();
 	return 0;
 }
