@@ -1,3 +1,6 @@
-Admin1,root1,1
-Admin2,root2,1
-Admin,root,1
+Potato,Potato2,0,
+Petio,Filiqta,0,
+Admincheto,Admincheto23,1,
+OBICHAM,FILLII,0,
+dasdas,dsadas,0,
+kartofche,123,0,
