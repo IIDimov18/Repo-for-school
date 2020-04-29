@@ -1,0 +1,17 @@
+
+Bathroom tiles|12.35|Gosho|the price is for m / sq
+Mouse Pad|21.45|Alex|35x45
+LG TV|769.99|Pesho|42 inches 
+T-Shirt|9.99|Penka|XL size 
+White Mercedes|6829|Nelina|Year of manufacture: 1997 
+Chickens|20|Milko|One chicken- 20 bgn 
+Fridge|178|John|2x1
+Leather|25|Miroslav|25 bgn for 1 meter
+Turkeys|35|Ivan|35 bgn for 1 turkey
+Pillow|15|Martin|15 bgn for 1 pillow
+muika|0||
+muika|1|muika|mauika
+gurga|1|gurga|gurga
+treva|89|yordanka|i
+treva|34||yordanka
+yordanka|43|pravi lukanka| piiva ot damajanka

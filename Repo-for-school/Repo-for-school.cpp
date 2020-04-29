@@ -277,17 +277,39 @@ bool Menu() {
 
 //************************************************************************************
 
-/********* Iliyan is working here (Data layer)***********/
+/********* Iliyan is working here ***********/
 
 
+void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem)
+{
+	items[itemCount] = newItem;
+	itemCount++;
+}
 
+/* void initItemsInArray(ITEM* items, int& itemCount)
+{
+	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" });
+	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" });
+	insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " });
+	insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " });
+	insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " });
+	insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " });
+	insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" });
+	insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" });
+	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" });
+	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" });
+} */
 
-
-
-
-
-
-
+void writeDataIntoFile(ITEM* items, int& itemCount)
+{
+	ofstream data;
+	data.open("items.txt", ios::app);
+	for (int i = 0; i < itemCount; i++)
+	{
+		data << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << endl;
+	}
+	
+}
 
 
 /********* Iliyan is working here (Data layer)***********/
@@ -317,8 +339,20 @@ int main()
 {
 	int itemCount = 0;
 	ITEM items[200];
-	//initItems(items, itemCount);
-	//writeInFile(items, itemCount);
+	//initItemsInArray(items, itemCount);
+	writeDataIntoFile(items, itemCount);
+	
+	ITEM nov;
+	getline(cin,nov.itemName);
+	cin >> nov.price;
+	cin.ignore();
+	getline(cin, nov.seller);
+	cin.ignore();
+	getline(cin,nov.description);
+	
+	insertItemInArray(items, itemCount, nov);
+	writeDataIntoFile(items, itemCount);
+	
 	/*string line;
 	ifstream myfile("data.txt");
 	if (myfile.is_open())
