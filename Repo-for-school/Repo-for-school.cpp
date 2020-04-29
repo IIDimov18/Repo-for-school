@@ -5,6 +5,7 @@
 #include <string.h>
 
 using namespace std;
+bool admin = false;
 struct ITEM
 {
 	string seller = "";
@@ -50,6 +51,8 @@ struct USER
 //Admin3, root3, 0
 //Admin4, root4, 1
 
+//************************************************************************************
+
 string checkAcc(string username, string password)
 {
 	ifstream myfile("acc.txt");
@@ -66,7 +69,7 @@ string checkAcc(string username, string password)
 				if (line[1] == password)
 				{
 					getline(myfile, line[2], ',');
-					
+
 					return line[2];
 				}
 				else
@@ -83,6 +86,8 @@ string checkAcc(string username, string password)
 	}
 	return "DEF";
 }
+
+//************************************************************************************
 
 
 void Register() {
@@ -106,15 +111,18 @@ void Register() {
 	}
 
 	cout << endl;
-	myfile <<endl<< username << "," << password <<",0,";
+	myfile << endl << username << "," << password << ",0,";
 	myfile.close();
 }
+
+//************************************************************************************
+
 void manageAccounts() {
 	int choice;
 	ifstream myfile("acc.txt");
-	string line[20],help;
+	string line[20], help;
 	int counter = 0, checkCounter = 0;
-	cout << "1. Show all accounts" << endl << "2. Delete account" << endl << "3. Edit account" << endl << "4. Remove/Add Admin" << endl<<"Choice: ";
+	cout << "1. Show all accounts" << endl << "2. Delete account" << endl << "3. Edit account" << endl << "4. Remove/Add Admin" << endl << "Choice: " << endl;
 	cin >> choice;
 	switch (choice)
 	{
@@ -125,7 +133,7 @@ void manageAccounts() {
 			{
 				getline(myfile, line[0], ',');
 				help = line[0];
-				if (help=="")
+				if (help == "")
 				{
 
 				}
@@ -150,23 +158,6 @@ void manageAccounts() {
 				}
 			}
 		}
-		break;
-	case 2:
-		cout << "1. Delete by name" << endl << "2. Delete by ID" << endl<<"Choice: ";
-		cin >> choice;
-		switch (choice)
-		{
-		case 1:
-			cout << "Username: ";
-			cin >> help;
-			break;
-		case 2:
-
-			break;
-		default:
-			break;
-		}
-		break;
 	default:
 		break;
 	}
@@ -175,9 +166,14 @@ void manageAccounts() {
 void manageOffers() {
 
 }
-void adminMenu() {
+
+//************************************************************************************
+
+
+void adminMenu()
+{
 	int choice;
-	cout << "1. Manage accounts" << endl << "2. Manage Offers" << endl << "Choice: ";
+	cout << "1. Manage Offers" << endl << "2. Manage accounts" << endl << "Choice";
 	cin >> choice;
 	switch (choice)
 	{
@@ -188,9 +184,13 @@ void adminMenu() {
 		manageOffers();
 		break;
 	default:
+
 		break;
 	}
 }
+
+//************************************************************************************
+
 void login() {
 	string username, password;
 	char character;
@@ -216,7 +216,7 @@ void login() {
 		cin >> password;
 		cout << endl;
 		cout << checkAcc(username, password);
-		if (checkAcc(username,password)=="1")
+		if (checkAcc(username, password) == "1")
 		{
 
 		}
@@ -227,6 +227,8 @@ void login() {
 		Register();
 	}
 }
+
+//************************************************************************************
 
 bool Menu() {
 	char input;
@@ -267,44 +269,31 @@ bool Menu() {
 			cin >> input;
 			cout << endl;
 		}
-				 break;
+			   break;
 		}
 	}
 	return true;
 }
 
-void createItem(ITEM* items, int& orderCount, ITEM newItem)
-{
-	items[orderCount] = newItem;
-	orderCount++;
-}
+//************************************************************************************
+
+/********* Iliyan is working here (Data layer)***********/
 
 
 
-void initItems(ITEM* items, int& itemCount)
-{
-	createItem(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" });
-	createItem(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" });
-	createItem(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches" });
-	createItem(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " });
-	createItem(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " });
-	createItem(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " });
-	createItem(items, itemCount, { "John", "Fridge", 178, "2x1" });
-	createItem(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" });
-	createItem(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" });
-	createItem(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" });
-}
 
-void writeInFile(ITEM* item, int itemCount)
-{
-	ofstream data;
-	data.open("data.txt");
-	for (int i = 0; i < itemCount; i++)
-	{
-		data << item[i].itemName << "|" << item[i].seller << "|" << item[i].price << "|" << item[i].description << endl;
-	}
-	data.close();
-}
+
+
+
+
+
+
+
+
+/********* Iliyan is working here (Data layer)***********/
+
+
+//************************************************************************************
 
 //void split(char character, string& arr,string stringToSplit) {
 //	char help[30];
@@ -322,12 +311,14 @@ void writeInFile(ITEM* item, int itemCount)
 //	}
 //}
 
+//************************************************************************************
+
 int main()
 {
 	int itemCount = 0;
 	ITEM items[200];
-	initItems(items, itemCount);
-	writeInFile(items, itemCount);
+	//initItems(items, itemCount);
+	//writeInFile(items, itemCount);
 	/*string line;
 	ifstream myfile("data.txt");
 	if (myfile.is_open())
