@@ -1,10 +1,10 @@
-﻿                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      #include <iostream>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      #include <iostream>
 #include <string>
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
-using namespace std;
 
+using namespace std;
 
 struct ITEM
 {
@@ -37,10 +37,8 @@ struct USER
 	switch (choice)
 	{
 	case 1:
-
 		break;
 	case 2:
-
 		break;
 	default:
 		break;
@@ -54,7 +52,8 @@ struct USER
 //Admin3, root3, 0
 //Admin4, root4, 1
 
-string checkAcc(string username,string password) {
+string checkAcc(string username,string password)
+{
 	ifstream myfile("acc.txt");
 	string line[20];
 	int counter=0,checkCounter=0;
@@ -73,7 +72,7 @@ string checkAcc(string username,string password) {
 				}
 				else
 				{
-					cout << "Wrong password. Please try again";
+
 				}
 			}
 			else
@@ -87,7 +86,6 @@ string checkAcc(string username,string password) {
 	}
 	return "DEF";
 }
-
 void login() {
 	string username, password;
 	char character;
@@ -97,20 +95,58 @@ void login() {
 	{
 		cout << "Username: ";
 		cin >> username;
-		cout <<endl<< "Password: ";
+		cout << "Password: ";
 		cin >> password;
-		cout<<checkAcc(username, password);
+    cout << "Confirm password: ";
+		cin >> c_password;
+
+    while(c_password != password)
+    {
+      cout<< "\nInvalid confirm password, please enter confirm pass again: "; cin >> c_password;
+    }
+    
+		cout << endl;
+    myfile << username << "," << password <<endl;
+    myfile.close();
+}
+void login() {
+	string username, password;
+	char character;
+	cout << "Do you have existing account[Y/N]: ";
+	cin >> character;
+	cout << endl;
+	if (character == 'Y')
+	{
+		cout << "___________________________________________________" << endl;
+		cout << endl;
+		cout << "               |===== LOGIN =====|\n\n" << endl;
+		cout << "Username: ";
+		cin >> username;
+		cout << "Password: ";
+		cin >> password;
+		cout << endl;
+		cout << checkAcc(username, password);
 	}
 	else
 	{
-		
+
 	}
 }
 void Menu() {
 	char input;
 	bool whileCheck = true;
-	cout << "Menu:" << endl << "1. Login" << endl << "2. Register" << endl << "3. Show Offers";
+
+	cout << "\n|============== Welcome to OLX_2.0 ==============|\n" << endl;
+	cout << endl;
+	cout << "                       Menu:\n" << endl;
+	cout << "                   1. Login" << endl;
+	cout << "                   2. Register" << endl;
+	cout << "                   3. Show Offers" << endl;
+	cout << "                   9. Exit\n\n";
+	cout << "\nChoose an option: ";
 	cin >> input;
+	cout << endl;
+
 	while (whileCheck)
 	{
 		switch (input)
@@ -124,30 +160,19 @@ void Menu() {
 			break;
 		case '3':
 			whileCheck = false;
+		case '9':
+			whileCheck = false;
 			break;
 		default:
 			break;
 		}
 	}
 }
-void createItem(ITEM* items, int& orderCount, ITEM newItem, int& maxId)
+void createItem(ITEM* items, int& orderCount, ITEM newItem)
 {
-	newItem.id = maxId;
 	items[orderCount] = newItem;
-
-	orderCount++;
-	maxId++;
+	orderCount++;	
 }
-
-int getItemIndexById(ITEM* items, int& itemCount, int id)
-{
-	for (int index = 0; index < itemCount; index++)
-	{
-		if (items[index].id == id) // check 
-		{
-			return index;
-		}
-	}
 
 	return -1;
 }
