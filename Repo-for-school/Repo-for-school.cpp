@@ -12,6 +12,7 @@ struct ITEM
 	string itemName = "";
 	float price = 0;
 	string description = "";
+	int id = 0;
 };
 
 struct USER
@@ -280,39 +281,66 @@ bool Menu() {
 /********* Iliyan is working here ***********/
 
 
-void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem)
+void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 {
+	newItem.id = maxId;
 	items[itemCount] = newItem;
 	itemCount++;
+	maxId++;
+
+	ofstream id;
+	id.open("id.txt");
+	id << maxId;
+
 }
 
-/* void initItemsInArray(ITEM* items, int& itemCount)
+ void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
 {
-	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" });
-	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" });
-	insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " });
-	insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " });
-	insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " });
-	insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " });
-	insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" });
-	insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" });
-	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" });
-	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" });
-} */
+	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" },maxId);
+	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" },maxId);
+	insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " },maxId);
+	insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " },maxId);
+	insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " },maxId);
+	insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " },maxId);
+	insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" },maxId);
+	insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" },maxId);
+	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" },maxId);
+	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" },maxId);
+} 
 
 void writeDataIntoFile(ITEM* items, int& itemCount)
 {
 	ofstream data;
 	data.open("items.txt", ios::app);
+
 	for (int i = 0; i < itemCount; i++)
 	{
-		data << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << endl;
+		data << items[i].id << "|" << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << "|" << endl;
 	}
-	
+
+	data.close();
+
 }
 
 
-/********* Iliyan is working here (Data layer)***********/
+/*int insertDataFromFileIntoArray(ITEM* items)
+{
+	short size;
+	string line;
+	ifstream myfile("item.txt");
+	while (!myfile.eof())
+	{
+		getline(myfile, line);
+		items[size++] = line;
+	}
+	myfile.close();
+}
+*/
+
+
+
+
+/********* Iliyan is working here ***********/
 
 
 //************************************************************************************
@@ -338,21 +366,21 @@ void writeDataIntoFile(ITEM* items, int& itemCount)
 int main()
 {
 	int itemCount = 0;
+	int maxId = 1;
 	ITEM items[200];
-	//initItemsInArray(items, itemCount);
+	initItemsInArray(items, itemCount, maxId);
 	writeDataIntoFile(items, itemCount);
-	
-	ITEM nov;
-	getline(cin,nov.itemName);
+
+	/*ITEM nov;
+	getline(cin, nov.itemName);
 	cin >> nov.price;
 	cin.ignore();
 	getline(cin, nov.seller);
-	cin.ignore();
-	getline(cin,nov.description);
-	
+	getline(cin, nov.description);
+
 	insertItemInArray(items, itemCount, nov);
 	writeDataIntoFile(items, itemCount);
-	
+
 	/*string line;
 	ifstream myfile("data.txt");
 	if (myfile.is_open())
