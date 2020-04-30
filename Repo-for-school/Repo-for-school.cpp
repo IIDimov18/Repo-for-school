@@ -138,14 +138,15 @@ void manageOffers() {
 
 /* Functions for managing items */
 
-void writeDataIntoFile(ITEM newItem, int& itemCount)
+void writeDataIntoFile(ITEM *items, int& itemCount)
 
 {
 	ofstream data;
-	data.open("items.txt", ios::app);
-
-	data << newItem.id << "|" << newItem.itemName << "|" << newItem.price << "|" << newItem.seller << "|" << newItem.description << "|" << 0 << "|" << endl;
-	
+	data.open("items.txt");
+	for (int i = 0; i < itemCount; i++)
+	{
+		data << items[i].id << "|" << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << "|" << 0 << "|" << endl;
+	}
 	data.close();
 
 }
@@ -498,9 +499,9 @@ int main()
 	getline(cin, nov.seller);
 	getline(cin, nov.description);
 	
-	insertItemInArray(newItem, itemCount, nov, maxId);
-	//initItemsInArray(newItem, itemCount,maxId);
-	writeDataIntoFile(newItem, itemCount);
+	insertItemInArray(items, itemCount, nov, maxId);
+	//initItemsInArray(items, itemCount,maxId);
+	writeDataIntoFile(items, itemCount);
 
 	/*string line;
 	ifstream myfile("data.txt");
