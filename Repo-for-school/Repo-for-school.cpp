@@ -5,6 +5,7 @@
 #include <string.h>
 
 using namespace std;
+bool admin = false;
 struct ITEM
 {
 	string seller = "";
@@ -50,6 +51,8 @@ struct USER
 //Admin3, root3, 0
 //Admin4, root4, 1
 
+//************************************************************************************
+
 string checkAcc(string username, string password)
 {
 	ifstream myfile("acc.txt");
@@ -66,7 +69,7 @@ string checkAcc(string username, string password)
 				if (line[1] == password)
 				{
 					getline(myfile, line[2], ',');
-					
+
 					return line[2];
 				}
 				else
@@ -83,6 +86,8 @@ string checkAcc(string username, string password)
 	}
 	return "DEF";
 }
+
+//************************************************************************************
 
 
 void Register() {
@@ -106,16 +111,45 @@ void Register() {
 	}
 
 	cout << endl;
-	myfile <<endl<< username << "," << password <<",0,";
+	myfile << endl << username << "," << password << ",0,";
 	myfile.close();
 }
-void manageAccounts() {
+
+//************************************************************************************
+
+int tokenize(string line, string* results,char delimiter) {
+	string help,help1 = line;
+	int counter=0;
+	for (int i = 0; i < help1.size(); i++)
+	{
+		if (help1[i]==delimiter)
+		{
+			results[counter++] = help;
+			help = "";
+		}
+		help[i] = help1[i];
+	}
+	return counter;
+}
+
+void manageAccounts()
+{
 	int choice;
 	ifstream myfile("acc.txt");
-	string line[20],help;
+	string tokens[150], help;
 	int counter = 0, checkCounter = 0;
-	cout << "1. Show all accounts" << endl << "2. Delete account" << endl << "3. Edit account" << endl << "4. Remove/Add Admin" << endl<<"Choice: ";
+
+	cout << "___________________________________________________" << endl;
+	cout << endl;
+	cout << "                1. Show all accounts" << endl;
+	cout << "                2. Delete account" << endl;
+	cout << "                3. Edit account" << endl;
+	cout << "                4. Remove/Add Admin\n" << endl;
+	cout << "Choose option: ";
 	cin >> choice;
+
+	cout << endl;
+
 	switch (choice)
 	{
 	case 1:
@@ -123,23 +157,20 @@ void manageAccounts() {
 		{
 			while (myfile.good())
 			{
-				getline(myfile, line[0], ',');
-				help = line[0];
-				if (help=="")
-				{
-
-				}
+				getline(myfile, tokens[0], ',');
+				help = tokens[0];
+				if (help == ""){}
 				else
 				{
 					if (help[0] == '\n')
 					{
 						help.erase(0, 1);
 					}
-					cout << "Username: " << help;
-					getline(myfile, line[1], ',');
-					getline(myfile, line[2], ',');
-					cout << " Admin: ";
-					if (line[2] == "1")
+					cout << "          Username: " << help;
+					getline(myfile, tokens[1], ',');
+					getline(myfile, tokens[2], ',');
+					cout << " | Admin: ";
+					if (tokens[2] == "1")
 					{
 						cout << "True" << endl;
 					}
@@ -150,22 +181,22 @@ void manageAccounts() {
 				}
 			}
 		}
-		break;
 	case 2:
-		cout << "1. Delete by name" << endl << "2. Delete by ID" << endl<<"Choice: ";
-		cin >> choice;
-		switch (choice)
+		/*cout << "Name of user: ";
+		cin >> help;*/
+		if (myfile.is_open())
 		{
-		case 1:
-			cout << "Username: ";
-			cin >> help;
-			break;
-		case 2:
-
-			break;
-		default:
-			break;
+			string line;
+			while (!myfile.eof())
+			{
+				string line((istreambuf_iterator<char>(myfile)),
+					(istreambuf_iterator<char>()));	
+					tokenize(line, tokens, ',');
+				cout << tokens;
+			}
 		}
+	case 3:
+		
 		break;
 	default:
 		break;
@@ -175,22 +206,49 @@ void manageAccounts() {
 void manageOffers() {
 
 }
-void adminMenu() {
+
+//************************************************************************************
+
+bool adminMenu()
+{
+	cout << "___________________________________________________\n" << endl;
+	cout << endl;
+	cout << "|============= Welcome to Admin menu =============|\n\n" << endl;
+
 	int choice;
-	cout << "1. Manage accounts" << endl << "2. Manage Offers" << endl << "Choice: ";
+	cout << "                1. Manage accounts" << endl;
+	cout << "                2. Manage Offers" << endl;
+	cout << "                9. Exit\n" << endl;
+
+	cout << "Choose option: ";
 	cin >> choice;
+	cout << endl;
+
 	switch (choice)
 	{
 	case 1:
-		manageAccounts();
+		manageAccounts(); return false;
 		break;
 	case 2:
-		manageOffers();
+		manageOffers(); return false;
 		break;
-	default:
+	case 9: return false;
+
 		break;
+	default:  while (choice != '1' && choice != '2' && choice != '9')
+	{
+		cout << "Invalid option, try again: ";
+		cin >> choice;
+		cout << endl;
 	}
+
+			  break;
+	}
+	return true;
 }
+
+//************************************************************************************
+
 void login() {
 	string username, password;
 	char character;
@@ -216,7 +274,7 @@ void login() {
 		cin >> password;
 		cout << endl;
 		cout << checkAcc(username, password);
-		if (checkAcc(username,password)=="1")
+		if (checkAcc(username, password) == "1")
 		{
 
 		}
@@ -227,6 +285,8 @@ void login() {
 		Register();
 	}
 }
+
+//************************************************************************************
 
 bool Menu() {
 	char input;
@@ -259,7 +319,7 @@ bool Menu() {
 			whileCheck = false;
 			break;
 		case 'A':
-			adminMenu();
+			adminMenu(); return false;
 			break;
 		default: while (input != '1' && input != '2' && input != '3' && input != '9')
 		{
@@ -273,13 +333,13 @@ bool Menu() {
 	return true;
 }
 
+//************************************************************************************
+
 void createItem(ITEM* items, int& orderCount, ITEM newItem)
 {
 	items[orderCount] = newItem;
 	orderCount++;
 }
-
-
 
 void initItems(ITEM* items, int& itemCount)
 {
@@ -306,21 +366,8 @@ void writeInFile(ITEM* item, int itemCount)
 	data.close();
 }
 
-//void split(char character, string& arr,string stringToSplit) {
-//	char help[30];
-//	int counter = 0, arrCounter = 0;;
-//	for (int i = 0; i < stringToSplit.length(); i++)
-//	{
-//		if (stringToSplit[i]==character)
-//		{
-//			arr[counter++] = help;
-//		}
-//		else
-//		{
-//			help[counter++] = stringToSplit[i];
-//		}
-//	}
-//}
+
+//************************************************************************************
 
 int main()
 {
