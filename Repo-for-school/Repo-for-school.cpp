@@ -12,7 +12,7 @@ struct ITEM
 	string itemName = "";
 	float price = 0;
 	string description = "";
-	int id=0;
+	int id = 0;
 };
 
 struct USER
@@ -52,7 +52,7 @@ struct USER
 //Admin3, root3, 0
 //Admin4, root4, 1
 
-//************************************************************************************
+
 
 string checkAcc(string username, string password)
 {
@@ -87,36 +87,6 @@ string checkAcc(string username, string password)
 	}
 	return "DEF";
 }
-
-//************************************************************************************
-
-
-void Register() {
-	ofstream myfile("acc.txt", ios::app);
-	string username, password, c_password;
-	cout << endl;
-
-	cout << "___________________________________________________" << endl;
-	cout << endl;
-	cout << "               |===== Register =====|\n\n" << endl;
-	cout << "Username: ";
-	cin >> username;
-	cout << "Password: ";
-	cin >> password;
-	cout << "Confirm password: ";
-	cin >> c_password;
-
-	while (c_password != password)
-	{
-		cout << "\nInvalid confirm password, please enter confirm pass again: "; cin >> c_password;
-	}
-
-	cout << endl;
-	myfile << endl << username << "," << password << ",0,";
-	myfile.close();
-}
-
-//************************************************************************************
 
 int tokenize(string line, string* results, char delimiter) {
 	string help, help1 = line;
@@ -204,11 +174,142 @@ void manageAccounts()
 	}
 	myfile.close();
 }
+
 void manageOffers() {
 
 }
 
-//************************************************************************************
+/* Items functions */
+
+class Data {
+
+public:
+
+	void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
+	{
+		insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" }, maxId);
+		insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" }, maxId);
+		insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " }, maxId);
+		insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " }, maxId);
+		insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " }, maxId);
+		insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " }, maxId);
+		insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" }, maxId);
+		insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" }, maxId);
+		insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" }, maxId);
+		insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
+	}
+
+	void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
+	{
+		newItem.id = maxId;
+		items[itemCount] = newItem;
+		itemCount++;
+		maxId++;
+
+		ofstream id;
+		id.open("id.txt");
+		id << maxId;
+
+	}
+
+	string getIdFromFile()
+	{
+		string line;
+		ifstream myfile("id.txt");
+		while (getline(myfile, line))
+		{
+			return line;
+		}
+		myfile.close();
+	}
+
+	void writeDataIntoFile(ITEM* items, int& itemCount)
+	{
+		ofstream data;
+		data.open("items.txt", ios::app);
+
+		for (int i = 0; i < itemCount; i++)
+		{
+			data << items[i].id << "|" << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << "|" << 0 << "|" << endl;
+		}
+
+		data.close();
+
+	}
+
+	int getItemIndexById(ITEM* items, int& itemCount, int id)
+	{
+		for (int i = 0; i < itemCount; i++)
+		{
+			if (items[i].id == id)
+				return i;
+		}
+
+		return NULL;
+	}
+
+	void updateItem(ITEM* items, ITEM newItem, int& itemCount, int& maxId) {
+		int index = getItemIndexById(items, itemCount, maxId);
+		items[index] = newItem;
+	}
+
+	void deleteItem(ITEM* items, int& itemCount, int id) {
+
+		int index = getItemIndexById(items, itemCount, id);
+		for (int i = index; i < itemCount - 1; i++)
+		{
+			items[i] = items[i + 1];
+		}
+		itemCount--;
+	}
+
+	ITEM getItemById(ITEM* items, int& itemCount, int id)
+	{
+		int index = getItemIndexById(items, itemCount, id);
+		return items[index];
+	}
+
+};
+
+/* Items functions */
+
+bool showItemsMenu(ITEM nov, ITEM* items, int& itemCount)
+{
+	char input;
+
+	cout << "___" << endl;
+	cout << endl;
+	cout << "\n   |=========== Wlcome to our shop ===========|\n" << endl;
+	cout << endl;
+	cout << "                       Menu:\n" << endl;
+	cout << "                 1. Show all offers" << endl;
+	cout << "                 2. Buy offers" << endl;
+	cout << "                 3. Add offers" << endl;
+	cout << "                 9. Back\n\n";
+	cout << "\nChoose an option: ";
+	cin >> input;
+	cout << endl;
+
+	switch (input)
+	{
+	case '1': return false;
+		break;
+	case '2': return true;
+		break;
+		//case '3':addItems(nov, items, itemCount); return true;
+		break;
+	case '9': return false;
+		break;
+	default: while (input != '1' && input != '2' && input != '3' && input != '9')
+	{
+		cout << "Invalid option, try again: ";
+		cin >> input;
+		cout << endl;
+	}
+		   break;
+	}
+	return true;
+}
 
 bool adminMenu()
 {
@@ -243,12 +344,35 @@ bool adminMenu()
 		cout << endl;
 	}
 
-			  break;
+		   break;
 	}
 	return true;
 }
 
-//************************************************************************************
+void Register() {
+	ofstream myfile("acc.txt", ios::app);
+	string username, password, c_password;
+	cout << endl;
+
+	cout << "___________________________________________________" << endl;
+	cout << endl;
+	cout << "               |===== Register =====|\n\n" << endl;
+	cout << "Username: ";
+	cin >> username;
+	cout << "Password: ";
+	cin >> password;
+	cout << "Confirm password: ";
+	cin >> c_password;
+
+	while (c_password != password)
+	{
+		cout << "\nInvalid confirm password, please enter confirm pass again: "; cin >> c_password;
+	}
+
+	cout << endl;
+	myfile << endl << username << "," << password << ",0,";
+	myfile.close();
+}
 
 void login() {
 	string username, password;
@@ -286,8 +410,6 @@ void login() {
 		Register();
 	}
 }
-
-//************************************************************************************
 
 bool Menu() {
 	char input;
@@ -328,152 +450,31 @@ bool Menu() {
 			cin >> input;
 			cout << endl;
 		}
-				 break;
+			   break;
 		}
 	}
 	return true;
 }
 
-//************************************************************************************
-
-void createItem(ITEM* items, int& orderCount, ITEM newItem)
-{
-	items[orderCount] = newItem;
-	orderCount++;
-}
-
-void initItems(ITEM* items, int& itemCount)
-{
-	createItem(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" });
-	createItem(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" });
-	createItem(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches" });
-	createItem(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " });
-	createItem(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " });
-	createItem(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " });
-	createItem(items, itemCount, { "John", "Fridge", 178, "2x1" });
-	createItem(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" });
-	createItem(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" });
-	createItem(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" });
-}
-
-void writeInFile(ITEM* item, int itemCount)
-{
-	ofstream data;
-	data.open("data.txt");
-	for (int i = 0; i < itemCount; i++)
-	{
-		data << item[i].itemName << "|" << item[i].seller << "|" << item[i].price << "|" << item[i].description << endl;
-	}
-	data.close();
-}
-
-
-//************************************************************************************
-void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
-{
-	newItem.id = maxId;
-	items[itemCount] = newItem;
-	itemCount++;
-	maxId++;
-
-	ofstream id;
-	id.open("id.txt");
-	id << maxId;
-
-}
-
-string getIdFromFile()
-{
-	string line;
-	ifstream myfile("id.txt");
-	while (getline(myfile, line))
-	{
-		return line;
-	}
-	myfile.close();
-}
-
-void writeDataIntoFile(ITEM* items, int& itemCount)
-{
-	ofstream data;
-	data.open("items.txt", ios::app);
-
-	for (int i = 0; i < itemCount; i++)
-	{
-		data << items[i].id << "|" << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << "|" << endl;
-	}
-
-	data.close();
-
-}
-
-int getItemIndexById(ITEM* items, int& itemCount, int id)
-{
-	for (int i = 0; i < itemCount; i++)
-	{
-		if (items[i].id == id)
-			return i;
-	}
-
-	return NULL;
-}
-
-void updateItem(ITEM * items, ITEM newItem, int& itemCount, int& maxId) {
-	int index = getItemIndexById(items, itemCount, maxId);
-	items[index] = newItem;
-}
-
-void deleteItem(ITEM * items, int& itemCount, int id) {
-
-	int index = getItemIndexById(items, itemCount, id);
-	for (int i = index; i < itemCount - 1; i++)
-	{
-		items[i] = items[i + 1];
-	}
-	itemCount--;
-}
-
-ITEM getItemById(ITEM * items, int& itemCount, int id)
-{
-	int index = getItemIndexById(items, itemCount, id);
-	return items[index];
-}
-
-/*int insertDataFromFileIntoArray(ITEM* items)
-{
-	short size;
-	string line;
-	ifstream myfile("item.txt");
-	while (!myfile.eof())
-	{
-		getline(myfile, line);
-		items[size++] = line;
-	}
-	myfile.close();
-}
-*/
-
-/*void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
-{
-	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" },maxId);
-	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" },maxId);
-	insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " },maxId);
-	insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " },maxId);
-	insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " },maxId);
-	insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " },maxId);
-	insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" },maxId);
-	insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" },maxId);
-	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" },maxId);
-	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" },maxId);
-} */
-
-
 int main()
 {
+	Data a;
+	string stringID = a.getIdFromFile();
+	int maxId = atoi(stringID.c_str());
 	int itemCount = 0;
 	ITEM items[200];
-	initItems(items, itemCount);
-	writeInFile(items, itemCount);
+
+	ITEM nov;
+	getline(cin, nov.itemName);
+	cin >> nov.price;
+	cin.ignore();
+	getline(cin, nov.seller);
+	getline(cin, nov.description);
+
+	a.insertItemInArray(items, itemCount, nov, maxId);
+	//a.initItemsInArray(items, itemCount,maxId);
+	a.writeDataIntoFile(items, itemCount);
+
 	/*string line;
 	ifstream myfile("data.txt");
 	if (myfile.is_open())
