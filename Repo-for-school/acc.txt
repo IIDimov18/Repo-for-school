@@ -1,8 +1,0 @@
-Petio,Haka,0,
-Haka,Gospod,1,
-Haka2,Gospod2,1,
-Haka3,Gospod3,0,
-Haka4,Gospod4,1,
-Obicham,Fillii,0,
-Haka69,Gospod5,0,
-Haka6,Gospod6,1,

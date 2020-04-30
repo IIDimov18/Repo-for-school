@@ -59,7 +59,7 @@ int tokenize(string line, string* results, char delimiter) {
 	}
 	return counter;
 }
-
+bool adminMenu();
 void manageAccounts()
 {
 	int choice;
@@ -68,199 +68,235 @@ void manageAccounts()
 	string tokens[10], help,newUsername;
 	int counter = 0, checkCounter = 0;
 	string line;
-
-	cout << "___________________________________________________" << endl;
-	cout << endl;
-	cout << "                1. Show all accounts" << endl;
-	cout << "                2. Delete account" << endl;
-	cout << "                3. Edit username" << endl;
-	cout << "                4. Remove/Add Admin\n" << endl;
-	cout << "                9. Go back" << endl;
-	cout << "Choose option: ";
-	cin >> choice;
-
-	cout << endl;
-
-	switch (choice)
+	bool accManagmentMenu = true;
+	while (accManagmentMenu)
 	{
-	case 1:
-		if (myfile.is_open())
+		cout << "___________________________________________________" << endl;
+		cout << endl;
+		cout << "                1. Show all accounts" << endl;
+		cout << "                2. Delete account" << endl;
+		cout << "                3. Edit username" << endl;
+		cout << "                4. Remove/Add Admin" << endl;
+		cout << "                9. Go back\n" << endl;
+		cout << "Choose option: ";
+		cin >> choice;
+
+		cout << endl;
+
+		switch (choice)
 		{
-			while (myfile.good())
+		case 1:
+			if (myfile.is_open())
 			{
-				getline(myfile, tokens[0], ',');
-				help = tokens[0];
-				if (help == "") {}
-				else
+				while (myfile.good())
 				{
-					if (help[0] == '\n')
-					{
-						help.erase(0, 1);
-					}
-					cout << "          Username: " << help;
-					getline(myfile, tokens[1], ',');
-					getline(myfile, tokens[2], ',');
-					cout << " | Admin: ";
-					if (tokens[2] == "1")
-					{
-						cout << "True" << endl;
-					}
-					else
-					{
-						cout << "False" << endl;
-					}
-				}
-			}
-		}
-		break;
-	case 2:
-		cout << "Name of user: ";
-		cin >> help;
-		if (myfile.is_open())
-		{
-			string line;
-			while (!myfile.eof())
-			{
-				getline(myfile, line);
-				//string line((istreambuf_iterator<char>(myfile)),
-					//(istreambuf_iterator<char>()));
-				if (line != "") {
-					tokenize(line, tokens, ',');
-					if (help != tokens[0]) {
-						if (tmpFile.is_open())
-						{
-							counter = 2;
-							tmpFile << tokens[counter] <<","<< tokens[counter--] <<","<< tokens[counter--]<<","<<endl;
-						}
-					}
-				}
-				else {
-				}
-			}
-			myfile.close();
-			if (remove("acc.txt") != 0) {
-				cerr << "A wild error appeared: ";
-			}
-			else {
-				cout << "Deleting account 50% done" << endl;
-			}
-			tmpFile.close();
-			if (rename("accTmp.txt", "acc.txt")!=0)
-			{
-				cerr<<"A wild error appeared : ";
-			}
-			else
-			{
-				cout << "Deleting account done!!!";
-			}
-		}
-		break;
-	case 3:
-		cout << "Name of user: ";
-		cin >> help;
-		if (myfile.is_open())
-		{
-			string line;
-			while (!myfile.eof())
-			{
-				getline(myfile, line);
-				//string line((istreambuf_iterator<char>(myfile)),
-					//(istreambuf_iterator<char>()));
-				if (line != "") {
-					tokenize(line, tokens, ',');
-					if (help != tokens[0]) {
-						if (tmpFile.is_open())
-						{
+					getline(myfile, tokens[0], ',');
 
-							tmpFile << tokens[0] << "," << tokens[1] << "," << tokens[2] << "," << endl;
-						}
-					}
-					else
-					{
-						cout << "New username: ";
-						cin >> newUsername;
-						tmpFile <<newUsername << "," << tokens[1] << "," << tokens[2] << "," << endl;
-					}
-				}
-				else {
-				}
-			}
-			myfile.close();
-			if (remove("acc.txt") != 0) {
-				cerr << "A wild error appeared: ";
-			}
-			else {
-				cout << "Editing username 50% done!" << endl;
-			}
-			tmpFile.close();
-			if (rename("accTmp.txt", "acc.txt") != 0)
-			{
-				cerr << "A wild error appeared : ";
-			}
-			else
-			{
-				cout << "Editing username done!!!!";
-			}
-		}
-		break;
-	case 4:
-		cout << "Name of user: ";
-		cin >> help;
-		if (myfile.is_open())
-		{
-			string line;
-			while (!myfile.eof())
-			{
-				getline(myfile, line);
-				//string line((istreambuf_iterator<char>(myfile)),
-					//(istreambuf_iterator<char>()));
-				if (line != "") {
-					tokenize(line, tokens, ',');
-					if (help != tokens[0]) {
-						if (tmpFile.is_open())
-						{
+					help = tokens[0];
 
-							tmpFile << tokens[0] << "," << tokens[1] << "," << tokens[2] << "," << endl;
-						}
-					}
+					if (help == "") {}
 					else
 					{
-						if (tokens[2]=="1")
+						if (help[0] == '\n')
 						{
-							counter = 2;
-							tmpFile << tokens[0] << "," << tokens[1] << "," << "0" << "," << endl;
+							help.erase(0, 1);
+						}
+						cout << "          Username: " << help;
+
+						getline(myfile, tokens[1], ',');
+						getline(myfile, tokens[2], ',');
+
+						cout << " | Admin: ";
+
+						if (tokens[2] == "1")
+						{
+							cout << "True" << endl;
 						}
 						else
 						{
-							counter = 2;
-							tmpFile << tokens[0] << "," << tokens[1] << "," << "1" << "," << endl;
+							cout << "False" << endl;
 						}
 					}
 				}
+			}
+			break;
+		case 2:
+			cout << "Name of user: ";
+			cin >> help;
+
+			if (myfile.is_open())
+			{
+				string line;
+				while (!myfile.eof())
+				{
+					getline(myfile, line);
+
+					if (line != "") {
+
+						tokenize(line, tokens, ',');
+
+						if (help != tokens[0]) {
+
+							if (tmpFile.is_open())
+							{
+								counter = 2;
+								tmpFile << tokens[counter] << "," << tokens[counter--] << "," << tokens[counter--] << "," << endl;
+							}
+
+						}
+					}
+				}
+				myfile.close();
+				if (remove("acc.txt") != 0) {
+					cerr << "A wild error appeared: ";
+				}
 				else {
+					cout << "Deleting account 50% done" << endl;
+				}
+				tmpFile.close();
+				if (rename("accTmp.txt", "acc.txt") != 0)
+				{
+					cerr << "A wild error appeared : ";
+				}
+				else
+				{
+					cout << "Deleting account done!!!" << endl;
 				}
 			}
+			break;
+		case 3:
+			cout << "Name of user: ";
+			cin >> help;
+
+			if (myfile.is_open())
+			{
+				string line;
+
+				while (!myfile.eof())
+				{
+					getline(myfile, line);
+
+					if (line != "") {
+						tokenize(line, tokens, ',');
+
+						if (help != tokens[0]) {
+
+							if (tmpFile.is_open())
+							{
+
+								tmpFile << tokens[0] << "," << tokens[1] << "," << tokens[2] << "," << endl;
+							}
+
+						}
+						else
+						{
+							cout << "New username: ";
+							cin >> newUsername;
+							tmpFile << newUsername << "," << tokens[1] << "," << tokens[2] << "," << endl;
+						}
+					}
+				}
+
+				myfile.close();
+
+				if (remove("acc.txt") != 0) {
+					cerr << "A wild error appeared: ";
+				}
+				else {
+					cout << "Editing username 50% done!" << endl;
+				}
+
+				tmpFile.close();
+
+				if (rename("accTmp.txt", "acc.txt") != 0)
+				{
+					cerr << "A wild error appeared : ";
+				}
+				else
+				{
+					cout << "Editing username done!!!!" << endl;
+				}
+			}
+			break;
+
+		case 4:
+			cout << "Name of user: ";
+			cin >> help;
+			if (myfile.is_open())
+			{
+				string line;
+
+				while (!myfile.eof())
+				{
+					getline(myfile, line);
+
+					if (line != "") {
+
+						tokenize(line, tokens, ',');
+
+						if (help != tokens[0]) {
+
+							if (tmpFile.is_open())
+							{
+
+								tmpFile << tokens[0] << "," << tokens[1] << "," << tokens[2] << "," << endl;
+							}
+						}
+						else
+						{
+							if (tokens[2] == "1")
+							{
+
+								counter = 2;
+								tmpFile << tokens[0] << "," << tokens[1] << "," << "0" << "," << endl;
+
+							}
+							else
+							{
+
+								counter = 2;
+								tmpFile << tokens[0] << "," << tokens[1] << "," << "1" << "," << endl;
+
+							}
+						}
+					}
+				}
+
+				myfile.close();
+
+				if (remove("acc.txt") != 0) {
+					cerr << "A wild error appeared: ";
+				}
+				else {
+					cout << "Adding/Removing Admin 50% done!" << endl;
+				}
+
+				tmpFile.close();
+
+				if (rename("accTmp.txt", "acc.txt") != 0)
+				{
+					cerr << "A wild error appeared : ";
+				}
+				else
+				{
+					cout << "Adding/Removing Admin done!!!!"<<endl;
+				}
+			}
+			break;
+
+		case 9:
+			remove("acctMP.txt");
 			myfile.close();
-			if (remove("acc.txt") != 0) {
-				cerr << "A wild error appeared: ";
-			}
-			else {
-				cout << "Adding/Removing Admin 50% done!" << endl;
-			}
-			tmpFile.close();
-			if (rename("accTmp.txt", "acc.txt") != 0)
-			{
-				cerr << "A wild error appeared : ";
-			}
-			else
-			{
-				cout << "Adding/Removing Admin done!!!!";
-			}
+			accManagmentMenu = false;
+			adminMenu();
+			
+			break;
+
+		default:
+			break;
 		}
-		break;
-	default:
-		break;
 	}
+	remove("acctMP.txt");
 	myfile.close();
 }
 
