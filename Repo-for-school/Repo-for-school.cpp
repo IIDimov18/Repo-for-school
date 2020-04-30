@@ -13,6 +13,7 @@ struct ITEM
 	float price = 0;
 	string description = "";
 	int id = 0;
+	bool isAproved = false;
 };
 
 struct USER
@@ -181,23 +182,6 @@ void manageOffers() {
 
 /* Items functions */
 
-class Data {
-
-public:
-
-	void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
-	{
-		insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" }, maxId);
-		insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" }, maxId);
-		insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " }, maxId);
-		insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " }, maxId);
-		insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " }, maxId);
-		insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " }, maxId);
-		insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" }, maxId);
-		insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" }, maxId);
-		insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" }, maxId);
-		insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
-	}
 
 	void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 	{
@@ -269,7 +253,50 @@ public:
 		return items[index];
 	}
 
-};
+	void inputDataInArray(ITEM* items)
+	{
+		fstream data;
+		data.open("items.txt");
+		string tokens[10];
+		int counter = 0;
+
+		if (data.is_open())
+		{
+			while (!data.eof())
+			{
+				for (int i = 0; i < 6; i++)
+				{
+					getline(data, tokens[i], '|');
+				}
+				items[counter].id = atoi(tokens[0].c_str());
+				items[counter].itemName = tokens[1];
+				items[counter].price = atoi(tokens[2].c_str());
+				items[counter].seller = tokens[3];
+				items[counter].description = tokens[4];
+				items[counter].isAproved = atoi(tokens[5].c_str());
+				counter++;
+			}
+		}
+		else
+		{
+			cerr << "File cannot be open" << endl;
+		}
+	}
+
+	void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
+	{
+		insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" }, maxId);
+		insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" }, maxId);
+		insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " }, maxId);
+		insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " }, maxId);
+		insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " }, maxId);
+		insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " }, maxId);
+		insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" }, maxId);
+		insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" }, maxId);
+		insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" }, maxId);
+		insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
+	}
+
 
 /* Items functions */
 
@@ -458,22 +485,21 @@ bool Menu() {
 
 int main()
 {
-	Data a;
-	string stringID = a.getIdFromFile();
+	string stringID = getIdFromFile();
 	int maxId = atoi(stringID.c_str());
 	int itemCount = 0;
 	ITEM items[200];
-
-	ITEM nov;
+	
+	/*ITEM nov; 
 	getline(cin, nov.itemName);
 	cin >> nov.price;
 	cin.ignore();
 	getline(cin, nov.seller);
 	getline(cin, nov.description);
 
-	a.insertItemInArray(items, itemCount, nov, maxId);
-	//a.initItemsInArray(items, itemCount,maxId);
-	a.writeDataIntoFile(items, itemCount);
+	insertItemInArray(items, itemCount, nov, maxId);
+	//initItemsInArray(items, itemCount,maxId);
+	writeDataIntoFile(items, itemCount);
 
 	/*string line;
 	ifstream myfile("data.txt");
