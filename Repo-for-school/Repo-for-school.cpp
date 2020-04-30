@@ -65,8 +65,7 @@ void manageAccounts()
 	int choice;
 	ifstream myfile("acc.txt");
 	ofstream tmpFile("accTmp.txt");
-	string tokens[10], help;
-	char FilePath[_MAX_PATH],fileName[]="acc.txt";
+	string tokens[10], help,newUsername;
 	int counter = 0, checkCounter = 0;
 	string line;
 
@@ -74,8 +73,9 @@ void manageAccounts()
 	cout << endl;
 	cout << "                1. Show all accounts" << endl;
 	cout << "                2. Delete account" << endl;
-	cout << "                3. Edit account" << endl;
+	cout << "                3. Edit username" << endl;
 	cout << "                4. Remove/Add Admin\n" << endl;
+	cout << "                9. Go back" << endl;
 	cout << "Choose option: ";
 	cin >> choice;
 
@@ -156,7 +156,52 @@ void manageAccounts()
 		}
 		break;
 	case 3:
+		cout << "Name of user: ";
+		cin >> help;
+		if (myfile.is_open())
+		{
+			string line;
+			while (!myfile.eof())
+			{
+				getline(myfile, line);
+				//string line((istreambuf_iterator<char>(myfile)),
+					//(istreambuf_iterator<char>()));
+				if (line != "") {
+					tokenize(line, tokens, ',');
+					if (help != tokens[0]) {
+						if (tmpFile.is_open())
+						{
 
+							tmpFile << tokens[0] << "," << tokens[1] << "," << tokens[2] << "," << endl;
+						}
+					}
+					else
+					{
+						cout << "New username: ";
+						cin >> newUsername;
+						tmpFile <<newUsername << "," << tokens[1] << "," << tokens[2] << "," << endl;
+					}
+				}
+				else {
+				}
+			}
+			myfile.close();
+			if (remove("acc.txt") != 0) {
+				cerr << "A wild error appeared: ";
+			}
+			else {
+				cout << "Editing username 50% done!" << endl;
+			}
+			tmpFile.close();
+			if (rename("accTmp.txt", "acc.txt") != 0)
+			{
+				cerr << "A wild error appeared : ";
+			}
+			else
+			{
+				cout << "Editing username done!!!!";
+			}
+		}
 		break;
 	case 4:
 		cout << "Name of user: ";
