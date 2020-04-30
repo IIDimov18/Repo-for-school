@@ -304,12 +304,15 @@ void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 string getIdFromFile()
 {
 	string line;
-	ifstream myfile("id.txt");
-	while (getline(myfile, line))
-	{
-		return line;
+	ifstream myfile;
+	myfile.open("id.txt");
+	if (myfile.is_open()) {
+		while (getline(myfile, line))
+		{
+			return line;
+		}
+		myfile.close();
 	}
-	myfile.close();
 }
 
 int getItemIndexById(ITEM* items, int& itemCount, int id)
