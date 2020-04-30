@@ -295,7 +295,7 @@ void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 
 }
 
- /* void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
+  /*void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
 {
 	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" },maxId);
 	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" },maxId);
@@ -307,8 +307,18 @@ void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 	insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" },maxId);
 	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" },maxId);
 	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" },maxId);
-} 
-*/
+} */
+
+string getIdFromFile()
+{
+	string line;
+	ifstream myfile("id.txt");
+	while (getline(myfile, line))
+	{
+		return line;
+	}
+	myfile.close();
+}
 
 void writeDataIntoFile(ITEM* items, int& itemCount)
 {
@@ -398,20 +408,22 @@ ITEM getItemById(ITEM* items, int& itemCount, int id)
 
 int main()
 {
+	
 	int itemCount = 0;
-	int maxId = 1;
+	string stringID = getIdFromFile();
+	int maxId= atoi(stringID.c_str());
 	ITEM items[200];
-	initItemsInArray(items, itemCount, maxId);
-	writeDataIntoFile(items, itemCount);
+	//initItemsInArray(items, itemCount, maxId);
+	//writeDataIntoFile(items, itemCount);
 
-	/*ITEM nov;
+	ITEM nov;
 	getline(cin, nov.itemName);
 	cin >> nov.price;
 	cin.ignore();
 	getline(cin, nov.seller);
 	getline(cin, nov.description);
 
-	insertItemInArray(items, itemCount, nov);
+	insertItemInArray(items, itemCount, nov, maxId);
 	writeDataIntoFile(items, itemCount);
 
 	/*string line;
