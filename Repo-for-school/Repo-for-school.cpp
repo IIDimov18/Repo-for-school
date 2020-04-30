@@ -183,124 +183,146 @@ void manageOffers() {
 /* Items functions */
 
 
-	void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
+void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
+{
+	newItem.id = maxId;
+	items[itemCount] = newItem;
+	itemCount++;
+	maxId++;
+
+	ofstream id;
+	id.open("id.txt");
+	id << maxId;
+
+}
+
+string getIdFromFile()
+{
+	string line;
+	ifstream myfile("id.txt");
+	while (getline(myfile, line))
 	{
-		newItem.id = maxId;
-		items[itemCount] = newItem;
-		itemCount++;
-		maxId++;
+		return line;
+	}
+	myfile.close();
+}
 
-		ofstream id;
-		id.open("id.txt");
-		id << maxId;
+void writeDataIntoFile(ITEM* items, int& itemCount)
+{
+	ofstream data;
+	data.open("items.txt", ios::app);
 
+	for (int i = 0; i < itemCount; i++)
+	{
+		data << items[i].id << "|" << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << "|" << 0 << "|" << endl;
 	}
 
-	string getIdFromFile()
+	data.close();
+
+}
+
+int getItemIndexById(ITEM* items, int& itemCount, int id)
+{
+	for (int i = 0; i < itemCount; i++)
 	{
-		string line;
-		ifstream myfile("id.txt");
-		while (getline(myfile, line))
+		if (items[i].id == id)
+			return i;
+	}
+
+	return NULL;
+}
+
+void updateItem(ITEM* items, ITEM newItem, int& itemCount, int& maxId) {
+	int index = getItemIndexById(items, itemCount, maxId);
+	items[index] = newItem;
+}
+
+void deleteItem(ITEM* items, int& itemCount, int id) {
+
+	int index = getItemIndexById(items, itemCount, id);
+	for (int i = index; i < itemCount - 1; i++)
+	{
+		items[i] = items[i + 1];
+	}
+	itemCount--;
+}
+
+ITEM getItemById(ITEM* items, int& itemCount, int id)
+{
+	int index = getItemIndexById(items, itemCount, id);
+	return items[index];
+}
+
+int inputDataInArray(ITEM* items)
+{
+	fstream data;
+	data.open("items.txt");
+	string tokens[10];
+	int counter = 0;
+
+	if (data.is_open())
+	{
+		while (!data.eof())
 		{
-			return line;
-		}
-		myfile.close();
-	}
-
-	void writeDataIntoFile(ITEM* items, int& itemCount)
-	{
-		ofstream data;
-		data.open("items.txt", ios::app);
-
-		for (int i = 0; i < itemCount; i++)
-		{
-			data << items[i].id << "|" << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << "|" << 0 << "|" << endl;
-		}
-
-		data.close();
-
-	}
-
-	int getItemIndexById(ITEM* items, int& itemCount, int id)
-	{
-		for (int i = 0; i < itemCount; i++)
-		{
-			if (items[i].id == id)
-				return i;
-		}
-
-		return NULL;
-	}
-
-	void updateItem(ITEM* items, ITEM newItem, int& itemCount, int& maxId) {
-		int index = getItemIndexById(items, itemCount, maxId);
-		items[index] = newItem;
-	}
-
-	void deleteItem(ITEM* items, int& itemCount, int id) {
-
-		int index = getItemIndexById(items, itemCount, id);
-		for (int i = index; i < itemCount - 1; i++)
-		{
-			items[i] = items[i + 1];
-		}
-		itemCount--;
-	}
-
-	ITEM getItemById(ITEM* items, int& itemCount, int id)
-	{
-		int index = getItemIndexById(items, itemCount, id);
-		return items[index];
-	}
-
-	void inputDataInArray(ITEM* items)
-	{
-		fstream data;
-		data.open("items.txt");
-		string tokens[10];
-		int counter = 0;
-
-		if (data.is_open())
-		{
-			while (!data.eof())
+			for (int i = 0; i < 6; i++)
 			{
-				for (int i = 0; i < 6; i++)
-				{
-					getline(data, tokens[i], '|');
-				}
-				items[counter].id = atoi(tokens[0].c_str());
-				items[counter].itemName = tokens[1];
-				items[counter].price = atoi(tokens[2].c_str());
-				items[counter].seller = tokens[3];
-				items[counter].description = tokens[4];
-				items[counter].isAproved = atoi(tokens[5].c_str());
-				counter++;
+				getline(data, tokens[i], '|');
 			}
-		}
-		else
-		{
-			cerr << "File cannot be open" << endl;
+			items[counter].id = atoi(tokens[0].c_str());
+			items[counter].itemName = tokens[1];
+			items[counter].price = atoi(tokens[2].c_str());
+			items[counter].seller = tokens[3];
+			items[counter].description = tokens[4];
+			items[counter].isAproved = atoi(tokens[5].c_str());
+			counter++;
 		}
 	}
-
-	void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
+	else
 	{
-		insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" }, maxId);
-		insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" }, maxId);
-		insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " }, maxId);
-		insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " }, maxId);
-		insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " }, maxId);
-		insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " }, maxId);
-		insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" }, maxId);
-		insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" }, maxId);
-		insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" }, maxId);
-		insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
+		cerr << "File cannot be open" << endl;
 	}
+	return counter;
+}
+
+void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
+{
+	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" }, maxId);
+	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" }, maxId);
+	insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " }, maxId);
+	insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " }, maxId);
+	insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " }, maxId);
+	insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " }, maxId);
+	insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" }, maxId);
+	insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" }, maxId);
+	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" }, maxId);
+	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
+}
+
+
+
+
+
+void showAlloffers(ITEM* items, int& itemCount)
+{
+
+	for (int i = 0; i < itemCount; i++)
+	{
+		if (items[i].isAproved == 1)
+		{
+			cout << "\nid: " << items[i].id << endl;
+			cout << "Item Name: " << items[i].itemName << endl;
+			cout << "Price: " << items[i].price << endl;
+			cout << "Seller Name: " << items[i].seller << endl;
+			cout << "Description: " << items[i].description << endl;
+		}
+
+	}
+}
 
 
 /* Items functions */
 
-bool showItemsMenu(ITEM nov, ITEM* items, int& itemCount)
+bool showItemsMenu(ITEM* items, int& itemCount)
 {
 	char input;
 
@@ -319,7 +341,9 @@ bool showItemsMenu(ITEM nov, ITEM* items, int& itemCount)
 
 	switch (input)
 	{
-	case '1': return false;
+	case '1':
+		showAlloffers(items, itemCount);
+		return false;
 		break;
 	case '2': return true;
 		break;
@@ -438,7 +462,7 @@ void login() {
 	}
 }
 
-bool Menu() {
+bool Menu(ITEM* items, int& itemCount) {
 	char input;
 	bool whileCheck = true;
 
@@ -457,6 +481,10 @@ bool Menu() {
 	{
 		switch (input)
 		{
+		case 'k':
+			showItemsMenu(items, itemCount);
+			return false;
+			break;
 		case '1':
 			login(); return false;
 			break;
@@ -471,7 +499,7 @@ bool Menu() {
 		case 'A':
 			adminMenu(); return false;
 			break;
-		default: while (input != '1' && input != '2' && input != '3' && input != '9')
+		default: while (input != '1' && input != '2' && input != '3' && input != '9' && input != 'k')
 		{
 			cout << "Invalid option, try again: ";
 			cin >> input;
@@ -487,10 +515,10 @@ int main()
 {
 	string stringID = getIdFromFile();
 	int maxId = atoi(stringID.c_str());
-	int itemCount = 0;
 	ITEM items[200];
-	
-	/*ITEM nov; 
+	int itemCount = inputDataInArray(items);
+
+	/*ITEM nov;
 	getline(cin, nov.itemName);
 	cin >> nov.price;
 	cin.ignore();
@@ -512,6 +540,7 @@ int main()
 		}
 		myfile.close();
 	}*/
-	Menu();
+
+	Menu(items, itemCount);
 	return 0;
 }
