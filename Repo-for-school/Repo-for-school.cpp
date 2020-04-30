@@ -281,6 +281,7 @@ bool Menu() {
 /********* Iliyan is working here ***********/
 
 
+
 void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 {
 	newItem.id = maxId;
@@ -294,7 +295,7 @@ void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 
 }
 
- void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
+ /* void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
 {
 	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" },maxId);
 	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" },maxId);
@@ -307,6 +308,7 @@ void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" },maxId);
 	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" },maxId);
 } 
+*/
 
 void writeDataIntoFile(ITEM* items, int& itemCount)
 {
@@ -322,6 +324,37 @@ void writeDataIntoFile(ITEM* items, int& itemCount)
 
 }
 
+int getItemIndexById(ITEM* items, int& itemCount, int id)
+{
+	for (int i = 0; i < itemCount; i++)
+	{
+		if (items[i].id == id)
+			return i;
+	}
+
+	return NULL;
+}
+
+void updateItem(ITEM* items, ITEM newItem, int& itemCount, int& maxId) {
+	int index = getItemIndexById(items, itemCount, maxId);
+	items[index] = newItem;
+}
+
+void deleteItem(ITEM* items, int& itemCount, int id) {
+
+	int index = getItemIndexById(items, itemCount, id);
+	for (int i = index; i < itemCount - 1; i++)
+	{
+		items[i] = items[i + 1];
+	}
+	itemCount--;
+}
+
+ITEM getItemById(ITEM* items, int& itemCount, int id)
+{
+	int index = getItemIndexById(items, itemCount, id);
+	return items[index];
+}
 
 /*int insertDataFromFileIntoArray(ITEM* items)
 {
