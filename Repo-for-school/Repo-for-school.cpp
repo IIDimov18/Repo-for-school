@@ -3,58 +3,11 @@
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
+#include "Structures.h"
 
 using namespace std;
-bool admin = false;
-struct ITEM
-{
-	string seller = "";
-	string itemName = "";
-	float price = 0;
-	string description = "";
-	int id = 0;
-	bool isAproved = false;
-};
 
-struct USER
-{
-	string username = "";
-	string password = "";
-	int countOfItemsForSell = 0;
-	// ITEM itemsForSale[];
-	int id = 0;
-};
-
-
-/*int login() {
-	int choice;
-	string username, password;
-	cout << "You need to login. Choose role you want to login with." << endl << "1) User" << endl << "2) Admin" << endl << "Your choice(answer with number):";
-	cin >> choice;
-	cout << "Username: ";
-	cin >> username;
-	cout << "Password: ";
-	cin >> password;
-	switch (choice)
-	{
-	case 1:
-		break;
-	case 2:
-		break;
-	default:
-		break;
-	}
-	return 0;
-}
-*/
-//Admincho,rootcho,1
-//Admin1, root1, 0
-//Admin2, root2, 1
-//Admin3, root3, 0
-//Admin4, root4, 1
-
-
-
+/* ACCOUNTS */
 string checkAcc(string username, string password)
 {
 	ifstream myfile("acc.txt");
@@ -180,7 +133,10 @@ void manageOffers() {
 
 }
 
-/* Items functions */
+/* ACCOUNTS */
+
+
+/* Functions for managing items */
 
 void writeDataIntoFile(ITEM newItem, int& itemCount)
 
@@ -297,10 +253,11 @@ void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
 	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
 }
 
-/* Item functions */
+/* Functions for managing items */
 
 
-//PRESENTATION
+/* Menus */
+
 void showAlloffers(ITEM* items, int& itemCount)
 {
 
@@ -525,6 +482,8 @@ bool Menu(ITEM* items, int& itemCount,int &maxId) {
 	}
 	return true;
 }
+
+/* Menus */
 
 int main()
 {
