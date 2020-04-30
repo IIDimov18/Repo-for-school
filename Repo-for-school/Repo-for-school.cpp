@@ -182,6 +182,17 @@ void manageOffers() {
 
 /* Items functions */
 
+void writeDataIntoFile(ITEM newItem, int& itemCount)
+
+{
+	ofstream data;
+	data.open("items.txt", ios::app);
+
+	data << newItem.id << "|" << newItem.itemName << "|" << newItem.price << "|" << newItem.seller << "|" << newItem.description << "|" << 0 << "|" << endl;
+	
+	data.close();
+
+}
 
 void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 {
@@ -194,6 +205,8 @@ void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 	id.open("id.txt");
 	id << maxId;
 
+	writeDataIntoFile(newItem, itemCount);
+
 }
 
 string getIdFromFile()
@@ -205,20 +218,6 @@ string getIdFromFile()
 		return line;
 	}
 	myfile.close();
-}
-
-void writeDataIntoFile(ITEM* items, int& itemCount)
-{
-	ofstream data;
-	data.open("items.txt", ios::app);
-
-	for (int i = 0; i < itemCount; i++)
-	{
-		data << items[i].id << "|" << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << "|" << 0 << "|" << endl;
-	}
-
-	data.close();
-
 }
 
 int getItemIndexById(ITEM* items, int& itemCount, int id)
@@ -298,10 +297,10 @@ void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
 	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
 }
 
+/* Item functions */
 
 
-
-
+//PRESENTATION
 void showAlloffers(ITEM* items, int& itemCount)
 {
 
@@ -319,10 +318,24 @@ void showAlloffers(ITEM* items, int& itemCount)
 	}
 }
 
+void addOfferMenu(ITEM* items, int& itemCount, int& maxId)
+{
+	ITEM newItem;
+	cin.ignore();
+	cout << "\n Enter Item Name: ";
+	getline(cin,newItem.itemName);
+	cout << "Enter Price: ";
+	cin >> newItem.price;
+	cin.ignore();
+	cout << "Enter Your Name: ";
+	getline(cin,newItem.seller);
+	cout << "Enter More Information About The Product: ";
+	getline(cin,newItem.description);
 
-/* Items functions */
+	insertItemInArray(items, itemCount, newItem, maxId);
+}
 
-bool showItemsMenu(ITEM* items, int& itemCount)
+bool showItemsMenu(ITEM* items, int& itemCount,int& maxId)
 {
 	char input;
 
@@ -343,11 +356,13 @@ bool showItemsMenu(ITEM* items, int& itemCount)
 	{
 	case '1':
 		showAlloffers(items, itemCount);
-		return false;
+		return true;
 		break;
 	case '2': return true;
 		break;
-		//case '3':addItems(nov, items, itemCount); return true;
+		case '3':
+		addOfferMenu(items,itemCount,maxId);
+		return true;
 		break;
 	case '9': return false;
 		break;
@@ -462,7 +477,7 @@ void login() {
 	}
 }
 
-bool Menu(ITEM* items, int& itemCount) {
+bool Menu(ITEM* items, int& itemCount,int &maxId) {
 	char input;
 	bool whileCheck = true;
 
@@ -482,7 +497,7 @@ bool Menu(ITEM* items, int& itemCount) {
 		switch (input)
 		{
 		case 'k':
-			showItemsMenu(items, itemCount);
+			showItemsMenu(items,itemCount,maxId);
 			return false;
 			break;
 		case '1':
@@ -518,16 +533,15 @@ int main()
 	ITEM items[200];
 	int itemCount = inputDataInArray(items);
 
-	/*ITEM nov;
-	getline(cin, nov.itemName);
+	/*getline(cin, nov.itemName);
 	cin >> nov.price;
 	cin.ignore();
 	getline(cin, nov.seller);
 	getline(cin, nov.description);
-
-	insertItemInArray(items, itemCount, nov, maxId);
-	//initItemsInArray(items, itemCount,maxId);
-	writeDataIntoFile(items, itemCount);
+	
+	insertItemInArray(newItem, itemCount, nov, maxId);
+	//initItemsInArray(newItem, itemCount,maxId);
+	writeDataIntoFile(newItem, itemCount);
 
 	/*string line;
 	ifstream myfile("data.txt");
@@ -541,6 +555,6 @@ int main()
 		myfile.close();
 	}*/
 
-	Menu(items, itemCount);
+	Menu(items, itemCount, maxId);
 	return 0;
 }
