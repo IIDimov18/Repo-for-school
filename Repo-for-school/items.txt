@@ -10,3 +10,4 @@
 10|Pillow|15|Martin|15 bgn for 1 pillow|0|
 11|pishka|15|kur|kurec|0|
 12|baba yori|12|dqdo yori|very durta baba|0|
+13|test po biolofiq|0|ceco|31.5-30|0|
