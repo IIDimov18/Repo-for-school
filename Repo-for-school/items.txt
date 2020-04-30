@@ -1,0 +1,11 @@
+1|Bathroom tiles|12.35|Gosho|the price is for m / sq|
+2|Mouse Pad|21.45|Alex|35x45|
+3|LG TV|769.99|Pesho|42 inches |
+4|T-Shirt|9.99|Penka|XL size |
+5|White Mercedes|6829|Nelina|Year of manufacture: 1997 |
+6|Chickens|20|Milko|One chicken- 20 bgn |
+7|Fridge|178|John|2x1|
+8|Leather|25|Miroslav|25 bgn for 1 meter|
+9|Turkeys|35|Ivan|35 bgn for 1 turkey|
+10|Pillow|15|Martin|15 bgn for 1 pillow|
+11|guika|1|muika|drunka|

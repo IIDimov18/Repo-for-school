@@ -12,6 +12,7 @@ struct ITEM
 	string itemName = "";
 	float price = 0;
 	string description = "";
+	int id = 0;
 };
 
 struct USER
@@ -117,39 +118,13 @@ void Register() {
 
 //************************************************************************************
 
-int tokenize(string line, string* results,char delimiter) {
-	string help,help1 = line;
-	int counter=0;
-	for (int i = 0; i < help1.size(); i++)
-	{
-		if (help1[i]==delimiter)
-		{
-			results[counter++] = help;
-			help = "";
-		}
-		help[i] = help1[i];
-	}
-	return counter;
-}
-
-void manageAccounts()
-{
+void manageAccounts() {
 	int choice;
 	ifstream myfile("acc.txt");
-	string tokens[150], help;
+	string line[20], help;
 	int counter = 0, checkCounter = 0;
-
-	cout << "___________________________________________________" << endl;
-	cout << endl;
-	cout << "                1. Show all accounts" << endl;
-	cout << "                2. Delete account" << endl;
-	cout << "                3. Edit account" << endl;
-	cout << "                4. Remove/Add Admin\n" << endl;
-	cout << "Choose option: ";
+	cout << "1. Show all accounts" << endl << "2. Delete account" << endl << "3. Edit account" << endl << "4. Remove/Add Admin" << endl << "Choice: " << endl;
 	cin >> choice;
-
-	cout << endl;
-
 	switch (choice)
 	{
 	case 1:
@@ -157,20 +132,23 @@ void manageAccounts()
 		{
 			while (myfile.good())
 			{
-				getline(myfile, tokens[0], ',');
-				help = tokens[0];
-				if (help == ""){}
+				getline(myfile, line[0], ',');
+				help = line[0];
+				if (help == "")
+				{
+
+				}
 				else
 				{
 					if (help[0] == '\n')
 					{
 						help.erase(0, 1);
 					}
-					cout << "          Username: " << help;
-					getline(myfile, tokens[1], ',');
-					getline(myfile, tokens[2], ',');
-					cout << " | Admin: ";
-					if (tokens[2] == "1")
+					cout << "Username: " << help;
+					getline(myfile, line[1], ',');
+					getline(myfile, line[2], ',');
+					cout << " Admin: ";
+					if (line[2] == "1")
 					{
 						cout << "True" << endl;
 					}
@@ -181,23 +159,6 @@ void manageAccounts()
 				}
 			}
 		}
-	case 2:
-		/*cout << "Name of user: ";
-		cin >> help;*/
-		if (myfile.is_open())
-		{
-			string line;
-			while (!myfile.eof())
-			{
-				string line((istreambuf_iterator<char>(myfile)),
-					(istreambuf_iterator<char>()));	
-					tokenize(line, tokens, ',');
-				cout << tokens;
-			}
-		}
-	case 3:
-		
-		break;
 	default:
 		break;
 	}
@@ -209,42 +170,24 @@ void manageOffers() {
 
 //************************************************************************************
 
-bool adminMenu()
+
+void adminMenu()
 {
-	cout << "___________________________________________________\n" << endl;
-	cout << endl;
-	cout << "|============= Welcome to Admin menu =============|\n\n" << endl;
-
 	int choice;
-	cout << "                1. Manage accounts" << endl;
-	cout << "                2. Manage Offers" << endl;
-	cout << "                9. Exit\n" << endl;
-
-	cout << "Choose option: ";
+	cout << "1. Manage Offers" << endl << "2. Manage accounts" << endl << "Choice";
 	cin >> choice;
-	cout << endl;
-
 	switch (choice)
 	{
 	case 1:
-		manageAccounts(); return false;
+		manageAccounts();
 		break;
 	case 2:
-		manageOffers(); return false;
+		manageOffers();
 		break;
-	case 9: return false;
+	default:
 
 		break;
-	default:  while (choice != '1' && choice != '2' && choice != '9')
-	{
-		cout << "Invalid option, try again: ";
-		cin >> choice;
-		cout << endl;
 	}
-
-			  break;
-	}
-	return true;
 }
 
 //************************************************************************************
@@ -319,7 +262,7 @@ bool Menu() {
 			whileCheck = false;
 			break;
 		case 'A':
-			adminMenu(); return false;
+			adminMenu();
 			break;
 		default: while (input != '1' && input != '2' && input != '3' && input != '9')
 		{
@@ -327,7 +270,7 @@ bool Menu() {
 			cin >> input;
 			cout << endl;
 		}
-				 break;
+			   break;
 		}
 	}
 	return true;
@@ -335,46 +278,154 @@ bool Menu() {
 
 //************************************************************************************
 
-void createItem(ITEM* items, int& orderCount, ITEM newItem)
+/********* Iliyan is working here ***********/
+
+
+
+void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 {
-	items[orderCount] = newItem;
-	orderCount++;
+	newItem.id = maxId;
+	items[itemCount] = newItem;
+	itemCount++;
+	maxId++;
+
+	ofstream id;
+	id.open("id.txt");
+	id << maxId;
+
 }
 
-void initItems(ITEM* items, int& itemCount)
+  /*void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
 {
-	createItem(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" });
-	createItem(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" });
-	createItem(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches" });
-	createItem(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " });
-	createItem(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " });
-	createItem(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " });
-	createItem(items, itemCount, { "John", "Fridge", 178, "2x1" });
-	createItem(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" });
-	createItem(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" });
-	createItem(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" });
+	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" },maxId);
+	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" },maxId);
+	insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " },maxId);
+	insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " },maxId);
+	insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " },maxId);
+	insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " },maxId);
+	insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" },maxId);
+	insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" },maxId);
+	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" },maxId);
+	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" },maxId);
+} */
+
+string getIdFromFile()
+{
+	string line;
+	ifstream myfile("id.txt");
+	while (getline(myfile, line))
+	{
+		return line;
+	}
+	myfile.close();
 }
 
-void writeInFile(ITEM* item, int itemCount)
+void writeDataIntoFile(ITEM* items, int& itemCount)
 {
 	ofstream data;
-	data.open("data.txt");
+	data.open("items.txt", ios::app);
+
 	for (int i = 0; i < itemCount; i++)
 	{
-		data << item[i].itemName << "|" << item[i].seller << "|" << item[i].price << "|" << item[i].description << endl;
+		data << items[i].id << "|" << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << "|" << endl;
 	}
+
 	data.close();
+
 }
 
+int getItemIndexById(ITEM* items, int& itemCount, int id)
+{
+	for (int i = 0; i < itemCount; i++)
+	{
+		if (items[i].id == id)
+			return i;
+	}
+
+	return NULL;
+}
+
+void updateItem(ITEM* items, ITEM newItem, int& itemCount, int& maxId) {
+	int index = getItemIndexById(items, itemCount, maxId);
+	items[index] = newItem;
+}
+
+void deleteItem(ITEM* items, int& itemCount, int id) {
+
+	int index = getItemIndexById(items, itemCount, id);
+	for (int i = index; i < itemCount - 1; i++)
+	{
+		items[i] = items[i + 1];
+	}
+	itemCount--;
+}
+
+ITEM getItemById(ITEM* items, int& itemCount, int id)
+{
+	int index = getItemIndexById(items, itemCount, id);
+	return items[index];
+}
+
+/*int insertDataFromFileIntoArray(ITEM* items)
+{
+	short size;
+	string line;
+	ifstream myfile("item.txt");
+	while (!myfile.eof())
+	{
+		getline(myfile, line);
+		items[size++] = line;
+	}
+	myfile.close();
+}
+*/
+
+
+
+
+/********* Iliyan is working here ***********/
+
+
+//************************************************************************************
+
+//void split(char character, string& arr,string stringToSplit) {
+//	char help[30];
+//	int counter = 0, arrCounter = 0;;
+//	for (int i = 0; i < stringToSplit.length(); i++)
+//	{
+//		if (stringToSplit[i]==character)
+//		{
+//			arr[counter++] = help;
+//		}
+//		else
+//		{
+//			help[counter++] = stringToSplit[i];
+//		}
+//	}
+//}
 
 //************************************************************************************
 
 int main()
 {
+	
 	int itemCount = 0;
+	string stringID = getIdFromFile();
+	int maxId= atoi(stringID.c_str());
 	ITEM items[200];
-	initItems(items, itemCount);
-	writeInFile(items, itemCount);
+	//initItemsInArray(items, itemCount, maxId);
+	//writeDataIntoFile(items, itemCount);
+
+	ITEM nov;
+	getline(cin, nov.itemName);
+	cin >> nov.price;
+	cin.ignore();
+	getline(cin, nov.seller);
+	getline(cin, nov.description);
+
+	insertItemInArray(items, itemCount, nov, maxId);
+	writeDataIntoFile(items, itemCount);
+
 	/*string line;
 	ifstream myfile("data.txt");
 	if (myfile.is_open())
