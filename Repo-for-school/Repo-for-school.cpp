@@ -295,20 +295,6 @@ void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 
 }
 
-  /*void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
-{
-	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" },maxId);
-	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" },maxId);
-	insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " },maxId);
-	insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " },maxId);
-	insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " },maxId);
-	insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " },maxId);
-	insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" },maxId);
-	insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" },maxId);
-	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" },maxId);
-	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" },maxId);
-} */
-
 string getIdFromFile()
 {
 	string line;
@@ -380,7 +366,19 @@ ITEM getItemById(ITEM* items, int& itemCount, int id)
 }
 */
 
-
+/*void initItemsInArray(ITEM* items, int& itemCount, int& maxId)
+{
+	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" },maxId);
+	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" },maxId);
+	insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " },maxId);
+	insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " },maxId);
+	insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " },maxId);
+	insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " },maxId);
+	insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" },maxId);
+	insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" },maxId);
+	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" },maxId);
+	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" },maxId);
+} */
 
 
 /********* Iliyan is working here ***********/
@@ -416,7 +414,7 @@ int main()
 	//initItemsInArray(items, itemCount, maxId);
 	//writeDataIntoFile(items, itemCount);
 
-	ITEM nov;
+	/*ITEM nov;
 	getline(cin, nov.itemName);
 	cin >> nov.price;
 	cin.ignore();
