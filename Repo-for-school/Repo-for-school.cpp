@@ -285,7 +285,6 @@ void manageAccounts()
 			break;
 
 		case 9:
-			remove("acctMP.txt");
 			myfile.close();
 			accManagmentMenu = false;
 			adminMenu();
@@ -296,7 +295,6 @@ void manageAccounts()
 			break;
 		}
 	}
-	remove("acctMP.txt");
 	myfile.close();
 }
 

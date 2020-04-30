@@ -1,0 +1,4 @@
+gosho,slepiq,0,
+gosho1,slepiq1,0,
+gosho2,slepiq2,0,
+gosho3,slepiq3,0,
