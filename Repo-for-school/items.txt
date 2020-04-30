@@ -11,3 +11,4 @@
 11|pishka|15|kur|kurec|0|
 12|baba yori|12|dqdo yori|very durta baba|0|
 13|test po biolofiq|0|ceco|31.5-30|0|
+14|baba Yori|0|Dqdo Turbalan|very crazy baba|0|

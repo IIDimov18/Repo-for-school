@@ -228,14 +228,15 @@ void manageOffers() {
 
 /* Functions for managing items */
 
-void writeDataIntoFile(ITEM newItem, int& itemCount)
+void writeDataIntoFile(ITEM* items, int& itemCount)
 
 {
 	ofstream data;
-	data.open("items.txt", ios::app);
-
-	data << newItem.id << "|" << newItem.itemName << "|" << newItem.price << "|" << newItem.seller << "|" << newItem.description << "|" << 0 << "|" << endl;
-
+	data.open("items.txt");
+	for (int i = 0; i < itemCount; i++)
+	{
+		data << items[i].id << "|" << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << "|" << 0 << "|" << endl;
+	}
 	data.close();
 
 }
@@ -251,7 +252,7 @@ void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
 	id.open("id.txt");
 	id << maxId;
 
-	writeDataIntoFile(newItem, itemCount);
+	writeDataIntoFile(items, itemCount);
 
 }
 
@@ -274,7 +275,7 @@ int getItemIndexById(ITEM* items, int& itemCount, int id)
 			return i;
 	}
 
-	return NULL;
+	return -1;
 }
 
 void updateItem(ITEM * items, ITEM newItem, int& itemCount, int& maxId) {
@@ -342,124 +343,6 @@ int inputDataInArray(ITEM * items)
 //	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" }, maxId);
 //	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
 //}
-
-/* Functions for managing items */
-
-void writeDataIntoFile(ITEM* items, int& itemCount)
-
-{
-	ofstream data;
-	data.open("items.txt");
-	for (int i = 0; i < itemCount; i++)
-	{
-		data << items[i].id << "|" << items[i].itemName << "|" << items[i].price << "|" << items[i].seller << "|" << items[i].description << "|" << 0 << "|" << endl;
-	}
-	data.close();
-
-}
-
-void insertItemInArray(ITEM* items, int& itemCount, ITEM newItem, int& maxId)
-{
-	newItem.id = maxId;
-	items[itemCount] = newItem;
-	itemCount++;
-	maxId++;
-
-	ofstream id;
-	id.open("id.txt");
-	id << maxId;
-
-	writeDataIntoFile(newItem, itemCount);
-
-}
-
-string getIdFromFile()
-{
-	string line;
-	ifstream myfile("id.txt");
-	while (getline(myfile, line))
-	{
-		return line;
-	}
-	myfile.close();
-}
-
-int getItemIndexById(ITEM* items, int& itemCount, int id)
-{
-	for (int i = 0; i < itemCount; i++)
-	{
-		if (items[i].id == id)
-			return i;
-	}
-
-	return NULL;
-}
-
-void updateItem(ITEM * items, ITEM newItem, int& itemCount, int& maxId) {
-	int index = getItemIndexById(items, itemCount, maxId);
-	items[index] = newItem;
-}
-
-void deleteItem(ITEM * items, int& itemCount, int id) {
-
-	int index = getItemIndexById(items, itemCount, id);
-	for (int i = index; i < itemCount - 1; i++)
-	{
-		items[i] = items[i + 1];
-	}
-	itemCount--;
-}
-
-ITEM getItemById(ITEM * items, int& itemCount, int id)
-{
-	int index = getItemIndexById(items, itemCount, id);
-	return items[index];
-}
-
-int inputDataInArray(ITEM * items)
-{
-	fstream data;
-	data.open("items.txt");
-	string tokens[10];
-	int counter = 0;
-
-	if (data.is_open())
-	{
-		while (!data.eof())
-		{
-			for (int i = 0; i < 6; i++)
-			{
-				getline(data, tokens[i], '|');
-			}
-			items[counter].id = atoi(tokens[0].c_str());
-			items[counter].itemName = tokens[1];
-			items[counter].price = atoi(tokens[2].c_str());
-			items[counter].seller = tokens[3];
-			items[counter].description = tokens[4];
-			items[counter].isAproved = atoi(tokens[5].c_str());
-			counter++;
-		}
-	}
-	else
-	{
-		cerr << "File cannot be open" << endl;
-	}
-	return counter;
-}
-
-void initItemsInArray(ITEM * items, int& itemCount, int& maxId)
-{
-	insertItemInArray(items, itemCount, { "Gosho", "Bathroom tiles", 12.35, "the price is for m / sq" }, maxId);
-	insertItemInArray(items, itemCount, { "Alex", "Mouse Pad", 21.45, "35x45" }, maxId);
-	insertItemInArray(items, itemCount, { "Pesho", "LG TV", 769.99, "42 inches " }, maxId);
-	insertItemInArray(items, itemCount, { "Penka", "T-Shirt", 9.99, "XL size " }, maxId);
-	insertItemInArray(items, itemCount, { "Nelina", "White Mercedes", 6829, "Year of manufacture: 1997 " }, maxId);
-	insertItemInArray(items, itemCount, { "Milko", "Chickens", 20, "One chicken- 20 bgn " }, maxId);
-	insertItemInArray(items, itemCount, { "John", "Fridge", 178, "2x1" }, maxId);
-	insertItemInArray(items, itemCount, { "Miroslav", "Leather", 25, "25 bgn for 1 meter" }, maxId);
-	insertItemInArray(items, itemCount, { "Ivan", "Turkeys", 35, "35 bgn for 1 turkey" }, maxId);
-	insertItemInArray(items, itemCount, { "Martin", "Pillow", 15, "15 bgn for 1 pillow" }, maxId);
-}
 
 /* Functions for managing items */
 
@@ -713,9 +596,9 @@ int main()
 	getline(cin, nov.seller);
 	getline(cin, nov.description);
 
-	insertItemInArray(newItem, itemCount, nov, maxId);
-	//initItemsInArray(newItem, itemCount,maxId);
-	writeDataIntoFile(newItem, itemCount);
+	insertItemInArray(items, itemCount, nov, maxId);
+	//initItemsInArray(items, itemCount,maxId);
+	writeDataIntoFile(items, itemCount);
 
 	/*string line;
 	ifstream myfile("data.txt");
