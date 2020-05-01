@@ -60,7 +60,7 @@ int tokenize(string line, string* results, char delimiter) {
 	return counter;
 }
 bool adminMenu(ITEM*, int&);
-void manageAccounts(ITEM* items, int& itemCount)
+void manageAccounts()
 {
 	int choice;
 	ifstream myfile("acc.txt");
@@ -328,7 +328,7 @@ void manageAccounts(ITEM* items, int& itemCount)
 		case 9:
 			myfile.close();
 			accManagmentMenu = false;
-			adminMenu(items, itemCount);
+			adminMenu(items, itemCount,maxID);
 
 			break;
 
@@ -576,6 +576,21 @@ void manageOffersMenu(ITEM* items, int& itemCount) {
 
 }
 
+bool checkAccExist(string username) {
+	string line,tokens[4];
+	fstream acc("acc.txt");
+	getline(acc, line);
+	tokenize(line, tokens, ',');
+	if (tokens[0]==username)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
 void addOfferMenu(ITEM* items, int& itemCount, int& maxId)
 {
 	ITEM newItem;
@@ -639,7 +654,7 @@ bool showItemsMenu(ITEM* items, int& itemCount, int& maxId)
 	return true;
 }
 
-bool adminMenu(ITEM* items, int& itemCount)
+bool adminMenu(ITEM* items, int& itemCount,int& maxID)
 {
 	cout << "___________________________________________________\n" << endl;
 	cout << endl;
@@ -648,7 +663,7 @@ bool adminMenu(ITEM* items, int& itemCount)
 	int choice;
 	cout << "                1. Manage accounts" << endl;
 	cout << "                2. Manage Offers" << endl;
-	cout << "                9. Exit\n" << endl;
+	cout << "                9. Logout\n" << endl;
 
 	cout << "Choose option: ";
 	cin >> choice;
@@ -657,12 +672,14 @@ bool adminMenu(ITEM* items, int& itemCount)
 	switch (choice)
 	{
 	case 1:
-		manageAccounts(items, itemCount); return false;
+		manageAccounts(); return false;
 		break;
 	case 2:
 		manageOffersMenu(items, itemCount); return false;
 		break;
-	case 9: return false;
+	case 9:
+		Menu(items, itemCount, maxID);
+		return false;
 
 		break;
 	default:  while (choice != '1' && choice != '2' && choice != '9')
@@ -687,6 +704,11 @@ void Register() {
 	cout << "               |===== Register =====|\n\n" << endl;
 	cout << "Username: ";
 	cin >> username;
+	if (!checkAccExist(username))
+	{
+		cout << "This username is already taken" << endl;
+		Register();
+	}
 	cout << "Password: ";
 	cin >> password;
 	cout << "Confirm password: ";
@@ -732,7 +754,7 @@ void login(ITEM* items, int& itemCount, int& maxID) {
 		}
 		if (checkAcc(username, password) == "1")
 		{
-			adminMenu(items, itemCount);
+			adminMenu(items, itemCount,maxID);
 		}
 		else
 		{
