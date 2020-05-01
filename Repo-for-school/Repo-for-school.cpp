@@ -59,8 +59,8 @@ int tokenize(string line, string* results, char delimiter) {
 	}
 	return counter;
 }
-bool adminMenu();
-void manageAccounts()
+bool adminMenu(ITEM*,int&);
+void manageAccounts(ITEM* items, int& itemCount)
 {
 	int choice;
 	ifstream myfile("acc.txt");
@@ -287,7 +287,7 @@ void manageAccounts()
 			case 9:
 				myfile.close();
 				accManagmentMenu = false;
-				adminMenu();
+				adminMenu(items, itemCount);
 
 				break;
 
@@ -298,9 +298,6 @@ void manageAccounts()
 	myfile.close();
 }
 
-void manageOffers() {
-
-}
 
 /* ACCOUNTS */
 
@@ -430,6 +427,13 @@ int inputDataInArray(ITEM* items)
 
 
 /* Menus */
+void deleteItemMenu(ITEM* items, int& itemCount)
+{
+	int id;
+	cout << "Which offer you want to delete" << endl;
+	cin >> id;
+	deleteItem(items, itemCount, id);
+}
 
 void showAlloffers(ITEM* items, int& itemCount)
 {
@@ -447,6 +451,33 @@ void showAlloffers(ITEM* items, int& itemCount)
 
 	}
 }
+
+void manageOffersMenu(ITEM* items, int& itemCount) {
+	cout << "\n 1. show all offers" << endl;
+	cout << "2. Add offer:" << endl;
+	cout << "3. Delete offer:" << endl;
+	cout << "4. Edit offer" << endl;
+	cout << "5. Show not aproved offers" << endl;
+	cout << "6. Aprove offer" << endl;
+	cout << "7. Aprove offer" << endl;
+	int choice;
+	cin >> choice;
+
+	switch (choice)
+	{
+		case 1:
+			showAlloffers(items, itemCount);
+			break;
+		case 2:
+
+			break;
+		case 3:
+			deleteItemMenu(items, itemCount);
+			break;
+	}
+
+}
+
 
 void addOfferMenu(ITEM* items, int& itemCount, int& maxId)
 {
@@ -511,7 +542,7 @@ bool showItemsMenu(ITEM* items, int& itemCount, int& maxId)
 	return true;
 }
 
-bool adminMenu()
+bool adminMenu(ITEM* items, int& itemCount)
 {
 	cout << "___________________________________________________\n" << endl;
 	cout << endl;
@@ -529,10 +560,10 @@ bool adminMenu()
 	switch (choice)
 	{
 		case 1:
-			manageAccounts(); return false;
+			manageAccounts(items, itemCount); return false;
 			break;
 		case 2:
-			manageOffers(); return false;
+			manageOffersMenu(items, itemCount); return false;
 			break;
 		case 9: return false;
 
@@ -574,7 +605,7 @@ void Register() {
 	myfile.close();
 }
 
-void login() {
+void login(ITEM* items, int& itemCount) {
 	string username, password, result = "invalidAccount";
 	char character;
 	cout << "Do you have existing account[Y/N]: ";
@@ -604,7 +635,7 @@ void login() {
 		}
 		if (checkAcc(username, password) == "1")
 		{
-			adminMenu();
+			adminMenu(items, itemCount);
 		}
 		else
 		{
@@ -642,7 +673,7 @@ bool Menu(ITEM* items, int& itemCount, int& maxId) {
 				return false;
 				break;
 			case '1':
-				login(); return false;
+				login(items, itemCount); return false;
 				break;
 			case '2':
 				Register(); return true;
@@ -653,7 +684,7 @@ bool Menu(ITEM* items, int& itemCount, int& maxId) {
 				whileCheck = false;
 				break;
 			case 'A':
-				adminMenu(); return false;
+				adminMenu( items, itemCount); return false;
 				break;
 			default: while (input != '1' && input != '2' && input != '3' && input != '9' && input != 'k' && input != 'A')
 			{
