@@ -86,254 +86,254 @@ void manageAccounts(ITEM* items, int& itemCount)
 
 		switch (choice)
 		{
-		case 1:
-			if (myfile.is_open())
-			{
-				while (myfile.good())
+			case 1:
+				if (myfile.is_open())
 				{
-					getline(myfile, tokens[0], ',');
-
-					help = tokens[0];
-
-					if (help == "") {}
-					else
+					while (myfile.good())
 					{
-						if (help[0] == '\n')
-						{
-							help.erase(0, 1);
-						}
-						cout << "          Username: " << help;
+						getline(myfile, tokens[0], ',');
 
-						getline(myfile, tokens[1], ',');
-						getline(myfile, tokens[2], ',');
+						help = tokens[0];
 
-						cout << " | Admin: ";
-
-						if (tokens[2] == "1")
-						{
-							cout << "True" << endl;
-						}
+						if (help == "") {}
 						else
 						{
-							cout << "False" << endl;
-						}
-					}
-				}
-			}
-			break;
-		case 2:
-			cout << "Name of user: ";
-			cin >> help;
-
-			if (myfile.is_open())
-			{
-				string line;
-				while (!myfile.eof())
-				{
-					getline(myfile, line);
-
-					if (line != "") {
-
-						tokenize(line, tokens, ',');
-
-						if (help != tokens[0]) {
-
-							if (tmpFile.is_open())
+							if (help[0] == '\n')
 							{
-								counter = 2;
-								tmpFile << tokens[counter] << "," << tokens[counter--] << "," << tokens[counter--] << "," << endl;
+								help.erase(0, 1);
 							}
+							cout << "          Username: " << help;
 
-						}
-						else
-						{
-							userExist = false;
-						}
-					}
-				}
-				if (!userExist)
-				{
-					cout << "This user doesn't exist, nothing happened" << endl;
-					myfile.close();
-					remove("acc.txt");
-					tmpFile.close();
-					rename("accTmp.txt", "acc.txt");
+							getline(myfile, tokens[1], ',');
+							getline(myfile, tokens[2], ',');
 
-				}
-				else
-				{
-					myfile.close();
-					if (remove("acc.txt") != 0) {
-						cerr << "A wild error appeared: ";
-					}
-					else {
-						cout << "Deleting account 50% done" << endl;
-					}
-					tmpFile.close();
-					if (rename("accTmp.txt", "acc.txt") != 0)
-					{
-						cerr << "A wild error appeared : ";
-					}
-					else
-					{
-						cout << "Deleting account done!!!" << endl;
-					}
-				}
-			}
-			break;
-		case 3:
-			cout << "Name of user: ";
-			cin >> help;
+							cout << " | Admin: ";
 
-			if (myfile.is_open())
-			{
-				string line;
-
-				while (!myfile.eof())
-				{
-					getline(myfile, line);
-
-					if (line != "") {
-						tokenize(line, tokens, ',');
-
-						if (help != tokens[0]) {
-
-							if (tmpFile.is_open())
-							{
-
-								tmpFile << tokens[0] << "," << tokens[1] << "," << tokens[2] << "," << endl;
-							}
-
-						}
-						else
-						{
-							cout << "New username: ";
-							cin >> newUsername;
-							tmpFile << newUsername << "," << tokens[1] << "," << tokens[2] << "," << endl;
-							userExist = true;
-						}
-					}
-				}
-				if (!userExist)
-				{
-					cout << "This user doesn't exist, nothing happened" << endl;
-					myfile.close();
-					remove("acc.txt");
-					tmpFile.close();
-					rename("accTmp.txt", "acc.txt");
-
-				}
-				else
-				{
-					myfile.close();
-
-					if (remove("acc.txt") != 0) {
-						cerr << "A wild error appeared: ";
-					}
-					else {
-						cout << "Editing username 50% done!" << endl;
-					}
-
-					tmpFile.close();
-
-					if (rename("accTmp.txt", "acc.txt") != 0)
-					{
-						cerr << "A wild error appeared : ";
-					}
-					else
-					{
-						cout << "Editing username done!!!!" << endl;
-					}
-				}
-			}
-			break;
-
-		case 4:
-			cout << "Name of user: ";
-			cin >> help;
-			if (myfile.is_open())
-			{
-				string line;
-
-				while (!myfile.eof())
-				{
-					getline(myfile, line);
-
-					if (line != "") {
-
-						tokenize(line, tokens, ',');
-
-						if (help != tokens[0]) {
-
-							if (tmpFile.is_open())
-							{
-
-								tmpFile << tokens[0] << "," << tokens[1] << "," << tokens[2] << "," << endl;
-							}
-						}
-						else
-						{
 							if (tokens[2] == "1")
 							{
+								cout << "True" << endl;
+							}
+							else
+							{
+								cout << "False" << endl;
+							}
+						}
+					}
+				}
+				break;
+			case 2:
+				cout << "Name of user: ";
+				cin >> help;
 
-								counter = 2;
-								tmpFile << tokens[0] << "," << tokens[1] << "," << "0" << "," << endl;
+				if (myfile.is_open())
+				{
+					string line;
+					while (!myfile.eof())
+					{
+						getline(myfile, line);
+
+						if (line != "") {
+
+							tokenize(line, tokens, ',');
+
+							if (help != tokens[0]) {
+
+								if (tmpFile.is_open())
+								{
+									counter = 2;
+									tmpFile << tokens[counter] << "," << tokens[counter--] << "," << tokens[counter--] << "," << endl;
+								}
 
 							}
 							else
 							{
-
-								counter = 2;
-								tmpFile << tokens[0] << "," << tokens[1] << "," << "1" << "," << endl;
-
+								userExist = false;
 							}
-							userExist = true;
 						}
 					}
-				}
-				if (!userExist)
-				{
-					cout << "This user doesn't exist, nothing happened" << endl;
-					myfile.close();
-					remove("acc.txt");
-					tmpFile.close();
-					rename("accTmp.txt", "acc.txt");
-
-				}
-				else
-				{
-					myfile.close();
-
-					if (remove("acc.txt") != 0) {
-						cerr << "A wild error appeared: ";
-					}
-					else {
-						cout << "Adding/Removing Admin 50% done!" << endl;
-					}
-
-					tmpFile.close();
-
-					if (rename("accTmp.txt", "acc.txt") != 0)
+					if (!userExist)
 					{
-						cerr << "A wild error appeared : ";
+						cout << "This user doesn't exist, nothing happened" << endl;
+						myfile.close();
+						remove("acc.txt");
+						tmpFile.close();
+						rename("accTmp.txt", "acc.txt");
+
 					}
 					else
 					{
-						cout << "Adding/Removing Admin done!!!!" << endl;
+						myfile.close();
+						if (remove("acc.txt") != 0) {
+							cerr << "A wild error appeared: ";
+						}
+						else {
+							cout << "Deleting account 50% done" << endl;
+						}
+						tmpFile.close();
+						if (rename("accTmp.txt", "acc.txt") != 0)
+						{
+							cerr << "A wild error appeared : ";
+						}
+						else
+						{
+							cout << "Deleting account done!!!" << endl;
+						}
 					}
 				}
-			}
-			break;
+				break;
+			case 3:
+				cout << "Name of user: ";
+				cin >> help;
 
-		case 9:
-			myfile.close();
-			accManagmentMenu = false;
-			adminMenu(items, itemCount);
+				if (myfile.is_open())
+				{
+					string line;
 
-			break;
+					while (!myfile.eof())
+					{
+						getline(myfile, line);
 
-		default:
-			break;
+						if (line != "") {
+							tokenize(line, tokens, ',');
+
+							if (help != tokens[0]) {
+
+								if (tmpFile.is_open())
+								{
+
+									tmpFile << tokens[0] << "," << tokens[1] << "," << tokens[2] << "," << endl;
+								}
+
+							}
+							else
+							{
+								cout << "New username: ";
+								cin >> newUsername;
+								tmpFile << newUsername << "," << tokens[1] << "," << tokens[2] << "," << endl;
+								userExist = true;
+							}
+						}
+					}
+					if (!userExist)
+					{
+						cout << "This user doesn't exist, nothing happened" << endl;
+						myfile.close();
+						remove("acc.txt");
+						tmpFile.close();
+						rename("accTmp.txt", "acc.txt");
+
+					}
+					else
+					{
+						myfile.close();
+
+						if (remove("acc.txt") != 0) {
+							cerr << "A wild error appeared: ";
+						}
+						else {
+							cout << "Editing username 50% done!" << endl;
+						}
+
+						tmpFile.close();
+
+						if (rename("accTmp.txt", "acc.txt") != 0)
+						{
+							cerr << "A wild error appeared : ";
+						}
+						else
+						{
+							cout << "Editing username done!!!!" << endl;
+						}
+					}
+				}
+				break;
+
+			case 4:
+				cout << "Name of user: ";
+				cin >> help;
+				if (myfile.is_open())
+				{
+					string line;
+
+					while (!myfile.eof())
+					{
+						getline(myfile, line);
+
+						if (line != "") {
+
+							tokenize(line, tokens, ',');
+
+							if (help != tokens[0]) {
+
+								if (tmpFile.is_open())
+								{
+
+									tmpFile << tokens[0] << "," << tokens[1] << "," << tokens[2] << "," << endl;
+								}
+							}
+							else
+							{
+								if (tokens[2] == "1")
+								{
+
+									counter = 2;
+									tmpFile << tokens[0] << "," << tokens[1] << "," << "0" << "," << endl;
+
+								}
+								else
+								{
+
+									counter = 2;
+									tmpFile << tokens[0] << "," << tokens[1] << "," << "1" << "," << endl;
+
+								}
+								userExist = true;
+							}
+						}
+					}
+					if (!userExist)
+					{
+						cout << "This user doesn't exist, nothing happened" << endl;
+						myfile.close();
+						remove("acc.txt");
+						tmpFile.close();
+						rename("accTmp.txt", "acc.txt");
+
+					}
+					else
+					{
+						myfile.close();
+
+						if (remove("acc.txt") != 0) {
+							cerr << "A wild error appeared: ";
+						}
+						else {
+							cout << "Adding/Removing Admin 50% done!" << endl;
+						}
+
+						tmpFile.close();
+
+						if (rename("accTmp.txt", "acc.txt") != 0)
+						{
+							cerr << "A wild error appeared : ";
+						}
+						else
+						{
+							cout << "Adding/Removing Admin done!!!!" << endl;
+						}
+					}
+				}
+				break;
+
+			case 9:
+				myfile.close();
+				accManagmentMenu = false;
+				adminMenu(items, itemCount);
+
+				break;
+
+			default:
+				break;
 		}
 	}
 	myfile.close();
@@ -398,12 +398,12 @@ int getItemIndexById(ITEM* items, int& itemCount, int id)
 	return -1;
 }
 
-void updateItem(ITEM * items, ITEM newItem, int& itemCount, int& maxId) {
+void updateItem(ITEM* items, ITEM newItem, int& itemCount, int& maxId) {
 	int index = getItemIndexById(items, itemCount, maxId);
 	items[index] = newItem;
 }
 
-void deleteItem(ITEM * items, int& itemCount, int id) {
+void deleteItem(ITEM* items, int& itemCount, int id) {
 	fstream data("items.txt");
 	ofstream dataTmp("itemsTmp.txt");
 	string line, tokens[10];
@@ -533,7 +533,7 @@ void deleteItemMenu(ITEM* items, int& itemCount)
 	deleteItem(items, itemCount, id);
 }
 
-void showAlloffers(ITEM* items, int& itemCount)
+void showAprovedOffers(ITEM* items, int& itemCount)
 {
 
 	for (int i = 0; i < itemCount; i++)
@@ -550,28 +550,57 @@ void showAlloffers(ITEM* items, int& itemCount)
 	}
 }
 
+void aproveRecordMenu(ITEM* items, int& itemCount)
+{
+	int id;
+	cout << "Enter Id to aprove: ";
+	cin >> id;
+
+}
+
+
+void showAllOffers(ITEM* items, int& itemCount)
+{
+
+	for (int i = 0; i < itemCount; i++)
+	{
+
+		cout << "\nid: " << items[i].id << endl;
+		cout << "Item Name: " << items[i].itemName << endl;
+		cout << "Price: " << items[i].price << endl;
+		cout << "Seller Name: " << items[i].seller << endl;
+		cout << "Description: " << items[i].description << endl;
+		cout << "Is Aproved:" << items[i].isAproved << endl;
+	}
+}
+
+
 void manageOffersMenu(ITEM* items, int& itemCount) {
-	cout << "\n 1. show all offers" << endl;
+	cout << "\n 1. Show all offers" << endl;
 	cout << "2. Add offer:" << endl;
 	cout << "3. Delete offer:" << endl;
 	cout << "4. Edit offer" << endl;
-	cout << "5. Show not aproved offers" << endl;
-	cout << "6. Aprove offer" << endl;
-	cout << "7. Aprove offer" << endl;
+	cout << "5. Aprove offer" << endl;
+	cout << "7. " << endl;
 	int choice;
 	cin >> choice;
 
 	switch (choice)
 	{
-	case 1:
-		showAlloffers(items, itemCount);
-		break;
-	case 2:
+		case 1:
+			showAllOffers(items, itemCount);
+			break;
+		case 2:
 
-		break;
-	case 3:
-		deleteItemMenu(items, itemCount);
-		break;
+			break;
+		case 3:
+			deleteItemMenu(items, itemCount);
+			break;
+		case 4:
+
+			break;
+		case 5:
+
 	}
 
 }
@@ -613,28 +642,28 @@ bool showItemsMenu(ITEM* items, int& itemCount, int& maxId)
 
 	switch (input)
 	{
-	case '1':
-		showAlloffers(items, itemCount);
-		return true;
-		break;
-	case '2':
-		return true;
-		break;
-	case '3': return true;
-		break;
-	case '4':
-		addOfferMenu(items, itemCount, maxId);
-		return true;
-		break;
-	case '9': return false;
-		break;
-	default: while (input != '1' && input != '2' && input != '3' && input != '9')
-	{
-		cout << "Invalid option, try again: ";
-		cin >> input;
-		cout << endl;
-	}
-			 break;
+		case '1':
+			showAprovedOffers(items, itemCount);
+			return true;
+			break;
+		case '2':
+			return true;
+			break;
+		case '3': return true;
+			break;
+		case '4':
+			addOfferMenu(items, itemCount, maxId);
+			return true;
+			break;
+		case '9': return false;
+			break;
+		default: while (input != '1' && input != '2' && input != '3' && input != '9')
+		{
+			cout << "Invalid option, try again: ";
+			cin >> input;
+			cout << endl;
+		}
+			   break;
 	}
 	return true;
 }
@@ -656,23 +685,23 @@ bool adminMenu(ITEM* items, int& itemCount)
 
 	switch (choice)
 	{
-	case 1:
-		manageAccounts(items, itemCount); return false;
-		break;
-	case 2:
-		manageOffersMenu(items, itemCount); return false;
-		break;
-	case 9: return false;
+		case 1:
+			manageAccounts(items, itemCount); return false;
+			break;
+		case 2:
+			manageOffersMenu(items, itemCount); return false;
+			break;
+		case 9: return false;
 
-		break;
-	default:  while (choice != '1' && choice != '2' && choice != '9')
-	{
-		cout << "Invalid option, try again: ";
-		cin >> choice;
-		cout << endl;
-	}
+			break;
+		default:  while (choice != '1' && choice != '2' && choice != '9')
+		{
+			cout << "Invalid option, try again: ";
+			cin >> choice;
+			cout << endl;
+		}
 
-			  break;
+			   break;
 	}
 	return true;
 }
@@ -766,31 +795,32 @@ bool Menu(ITEM* items, int& itemCount, int& maxId) {
 	{
 		switch (input)
 		{
-		case 'k':
-			showItemsMenu(items, itemCount, maxId);
-			return false;
-			break;
-		case '1':
-			login(items, itemCount, maxId); return false;
-			break;
-		case '2':
-			Register(); return true;
-			break;
-		case '3':
-			whileCheck = false;
-		case '9':
-			whileCheck = false;
-			break;
-		case 'A':
-			adminMenu(items, itemCount); return false;
-			break;
-		default: while (input != '1' && input != '2' && input != '3' && input != '9' && input != 'k' && input != 'A')
-		{
-			cout << "Invalid option, try again: ";
-			cin >> input;
-			cout << endl;
-		}
-				 break;
+			case 'k':
+				showItemsMenu(items, itemCount, maxId);
+				return false;
+				break;
+			case '1':
+				login(items, itemCount, maxId); return false;
+				break;
+			case '2':
+				Register(); return true;
+				break;
+			case '3':
+				showAprovedOffers(items, itemCount);
+				whileCheck = false;
+			case '9':
+				whileCheck = false;
+				break;
+			case 'A':
+				adminMenu(items, itemCount); return false;
+				break;
+			default: while (input != '1' && input != '2' && input != '3' && input != '9' && input != 'k' && input != 'A')
+			{
+				cout << "Invalid option, try again: ";
+				cin >> input;
+				cout << endl;
+			}
+				   break;
 		}
 	}
 	return true;
