@@ -519,6 +519,90 @@ int inputDataInArray(ITEM* items)
 
 
 /* Menus */
+void editOrderMenu()
+{
+	fstream itemsTxt("items.txt");
+	ofstream itemsTmp("itemsTmp.txt");
+	string line, tokens[8],id,help;
+	int choice;
+	bool offerExist = false;
+	cout << "Id of the offer you want to edit: ";
+	cin >> id;
+	cout << "What you want to change: " << endl;
+	cout << "1. Item Name" << endl;
+	cout << "2. Price" << endl;
+	cout << "3. Description" << endl;
+	cout << "Your choice: ";
+	cin >> choice;
+	if (itemsTxt.is_open())
+	{
+		while (!itemsTxt.eof())
+		{
+			getline(itemsTxt, line);
+			if (line != "")
+			{
+				tokenize(line, tokens, '|');
+				if (tokens[0]==id)
+				{
+					switch (choice)
+					{
+						case 1:
+							cout << "The new name of the item: ";
+							cin >> help;
+							itemsTmp << tokens[0] << "|" << help<< "|" << tokens[2] << "|" << tokens[3] << "|" << tokens[4] << "|" << tokens[5] << "|" << endl;
+							offerExist = true;
+							break;
+						case 2:
+							cout << "The new price: ";
+							cin >> help;
+							itemsTmp << tokens[0] << "|" << tokens[1] << "|" << help << "|" << tokens[3] << "|" << tokens[4] << "|" << tokens[5] << "|" << endl;
+							offerExist = true;
+							break;
+						case 3:
+							cout << "The new description: ";
+							cin >> help;
+							itemsTmp << tokens[0] << "|" << tokens[1] << "|" << tokens[2] << "|" << tokens[3] << "|" << help << "|" << tokens[5] << "|" << endl;
+							offerExist = true;
+							break;
+						default:
+							break;
+					}
+				}
+				else
+				{
+					itemsTmp << tokens[0] << "|" << tokens[1] << "|" << tokens[2] << "|" << tokens[3] << "|" << tokens[4] << "|" << tokens[5] << "|" << endl;
+				}
+			}
+		}
+		itemsTxt.close();
+		itemsTmp.close();
+		if (!offerExist)
+		{
+			cout << "There is no offer with that id." << endl;
+			remove("items.txt");
+			rename("itemsTmp.txt", "items.txt");
+		}
+		else
+		{
+			if (remove("items.txt") == 0)
+			{
+				cout << "Editing offer 50% done!" << endl;
+			}
+			else
+			{
+				cout << "A wild error appeared!" << endl;
+			}
+			if (rename("itemsTmp.txt", "items.txt") == 0)
+			{
+				cout << "Editing offer done!" << endl;
+			}
+			else
+			{
+				cout << "A wild error appeared!" << endl;
+			}
+		}
+	}
+}
 void deleteItemMenu()
 {
 	int id;
@@ -550,7 +634,6 @@ void aproveRecordMenu(ITEM* items, int& itemCount)
 	cin >> id;
 
 }
-
 
 void showAllOffers(ITEM* items, int& itemCount)
 {
@@ -664,7 +747,7 @@ void manageOffersMenu() {
 			deleteItemMenu();
 			break;
 		case 4:
-
+			editOrderMenu();
 			break;
 		case 5:
 			cout << "Type the ID of the offer you want to approve: ";

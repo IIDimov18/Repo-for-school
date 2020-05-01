@@ -2,8 +2,8 @@
 2|Mouse Pad|21|Alex|35x45|0|
 5|White Mercedes|6829|Nelina|Year of manufacture: 1997 |1|
 6|Chickens|20|Milko|One chicken- 20 bgn |0|
-8|Leather|25|Miroslav|25 bgn for 1 meter|0|
-9|Turkeys|35|Ivan|35 bgn for 1 turkey|0|
+8|Kojichki|25|Miroslav|25 bgn for 1 meter|0|
+9|Turkeys|1025|Ivan|kuche|0|
 10|Pillow|15|Martin|15 bgn for 1 pillow|0|
 0|Pillow|15|Martin|15 bgn for 1 pillow|0|
 16|test|15.69|test|tova e test za testvane|1|
