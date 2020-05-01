@@ -68,9 +68,10 @@ void manageAccounts(ITEM* items, int& itemCount)
 	string tokens[10], help, newUsername;
 	int counter = 0, checkCounter = 0;
 	string line;
-	bool accManagmentMenu = true;
+	bool accManagmentMenu = true, userExist = false;
 	while (accManagmentMenu)
 	{
+		userExist = false;
 		cout << "___________________________________________________" << endl;
 		cout << endl;
 		cout << "                1. Show all accounts" << endl;
@@ -144,23 +145,39 @@ void manageAccounts(ITEM* items, int& itemCount)
 								}
 
 							}
+							else
+							{
+								userExist = false;
+							}
 						}
 					}
-					myfile.close();
-					if (remove("acc.txt") != 0) {
-						cerr << "A wild error appeared: ";
-					}
-					else {
-						cout << "Deleting account 50% done" << endl;
-					}
-					tmpFile.close();
-					if (rename("accTmp.txt", "acc.txt") != 0)
+					if (!userExist)
 					{
-						cerr << "A wild error appeared : ";
+						cout << "This user doesn't exist, nothing happened" << endl;
+						myfile.close();
+						remove("acc.txt");
+						tmpFile.close();
+						rename("accTmp.txt", "acc.txt");
+
 					}
 					else
 					{
-						cout << "Deleting account done!!!" << endl;
+						myfile.close();
+						if (remove("acc.txt") != 0) {
+							cerr << "A wild error appeared: ";
+						}
+						else {
+							cout << "Deleting account 50% done" << endl;
+						}
+						tmpFile.close();
+						if (rename("accTmp.txt", "acc.txt") != 0)
+						{
+							cerr << "A wild error appeared : ";
+						}
+						else
+						{
+							cout << "Deleting account done!!!" << endl;
+						}
 					}
 				}
 				break;
@@ -193,28 +210,40 @@ void manageAccounts(ITEM* items, int& itemCount)
 								cout << "New username: ";
 								cin >> newUsername;
 								tmpFile << newUsername << "," << tokens[1] << "," << tokens[2] << "," << endl;
+								userExist = true;
 							}
 						}
 					}
-
-					myfile.close();
-
-					if (remove("acc.txt") != 0) {
-						cerr << "A wild error appeared: ";
-					}
-					else {
-						cout << "Editing username 50% done!" << endl;
-					}
-
-					tmpFile.close();
-
-					if (rename("accTmp.txt", "acc.txt") != 0)
+					if (!userExist)
 					{
-						cerr << "A wild error appeared : ";
+						cout << "This user doesn't exist, nothing happened" << endl;
+						myfile.close();
+						remove("acc.txt");
+						tmpFile.close();
+						rename("accTmp.txt", "acc.txt");
+
 					}
 					else
 					{
-						cout << "Editing username done!!!!" << endl;
+						myfile.close();
+
+						if (remove("acc.txt") != 0) {
+							cerr << "A wild error appeared: ";
+						}
+						else {
+							cout << "Editing username 50% done!" << endl;
+						}
+
+						tmpFile.close();
+
+						if (rename("accTmp.txt", "acc.txt") != 0)
+						{
+							cerr << "A wild error appeared : ";
+						}
+						else
+						{
+							cout << "Editing username done!!!!" << endl;
+						}
 					}
 				}
 				break;
@@ -258,28 +287,40 @@ void manageAccounts(ITEM* items, int& itemCount)
 									tmpFile << tokens[0] << "," << tokens[1] << "," << "1" << "," << endl;
 
 								}
+								userExist = true;
 							}
 						}
 					}
-
-					myfile.close();
-
-					if (remove("acc.txt") != 0) {
-						cerr << "A wild error appeared: ";
-					}
-					else {
-						cout << "Adding/Removing Admin 50% done!" << endl;
-					}
-
-					tmpFile.close();
-
-					if (rename("accTmp.txt", "acc.txt") != 0)
+					if (!userExist)
 					{
-						cerr << "A wild error appeared : ";
+						cout << "This user doesn't exist, nothing happened" << endl;
+						myfile.close();
+						remove("acc.txt");
+						tmpFile.close();
+						rename("accTmp.txt", "acc.txt");
+
 					}
 					else
 					{
-						cout << "Adding/Removing Admin done!!!!" << endl;
+						myfile.close();
+
+						if (remove("acc.txt") != 0) {
+							cerr << "A wild error appeared: ";
+						}
+						else {
+							cout << "Adding/Removing Admin 50% done!" << endl;
+						}
+
+						tmpFile.close();
+
+						if (rename("accTmp.txt", "acc.txt") != 0)
+						{
+							cerr << "A wild error appeared : ";
+						}
+						else
+						{
+							cout << "Adding/Removing Admin done!!!!" << endl;
+						}
 					}
 				}
 				break;
