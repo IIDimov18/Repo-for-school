@@ -1,9 +1,13 @@
 1|Bathroom tiles|12|Gosho|the price is for m / sq|0|
 2|Mouse Pad|21|Alex|35x45|0|
-5|White Mercedes|6829|Nelina|Year of manufacture: 1997 |1|
+5|White Mercedes|6829|Nelina|Year of manufacture: 1997 |0|
 6|Chickens|20|Milko|One chicken- 20 bgn |0|
 8|Kojichki|25|Miroslav|25 bgn for 1 meter|0|
 9|Turkeys|1025|Ivan|kuche|0|
 10|Pillow|15|Martin|15 bgn for 1 pillow|0|
 0|Pillow|15|Martin|15 bgn for 1 pillow|0|
-16|test|15.69|test|tova e test za testvane|1|
+16|test|15|test|tova e test za testvane|0|
+0|test|15|test|tova e test za testvane|0|
+17|nula vreme|12|milko|she ti otneme|0|
+0|nula vreme|12|milko|she ti otneme|0|
+18|por|12|porky|izporen por|0|

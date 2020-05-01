@@ -6,6 +6,7 @@
 #include <windows.h>
 #include "Structures.h"
 
+
 using namespace std;
 
 /* ACCOUNTS */
@@ -59,7 +60,9 @@ int tokenize(string line, string* results, char delimiter) {
 	}
 	return counter;
 }
+
 bool adminMenu();
+
 void manageAccounts()
 {
 	int choice;
@@ -519,11 +522,151 @@ int inputDataInArray(ITEM* items)
 
 
 /* Menus */
+bool showItemsMenu();
+bool Menu();
+
+void sortItemsMenu(ITEM* items, int& itemCount)
+{
+	int choice;
+	float temp;
+	float minPrice = 0, maxPrice = 0;
+	bool showMenu = true;
+
+
+	while (showMenu)
+	{
+		cout << "Criterias" << endl;
+		cout << "1. Items with price lower than what you entered" << endl;
+		cout << "2. Items with price higher than waht you entered" << endl;
+		cout << "3. Price diapason" << endl;
+		cout << "4. Ascending Price" << endl;
+		cout << "5. Descending Price" << endl;
+		cout << "9. Go Back" << endl;
+		cin >> choice;
+
+		switch (choice)
+		{
+			case 1:
+				cout << "Max Price: ";
+				cin >> maxPrice;
+				for (int i = 0; i < itemCount; i++)
+				{
+					if (items[i].isAproved == 1 && items[i].price <= maxPrice)
+					{
+						cout << "\nItem id: " << items[i].id << endl;
+						cout << "Item name: " << items[i].itemName << endl;
+						cout << "Price: " << items[i].price << endl;
+						cout << "Seller: " << items[i].seller << endl;
+						cout << "Descriprion: " << items[i].description << endl;
+					}
+				}
+
+				break;
+			case 2:
+				cout << "Min Price: ";
+				cin >> minPrice;
+				for (int i = 0; i < itemCount; i++)
+				{
+					if (items[i].isAproved == 1 && items[i].price >= minPrice)
+					{
+						cout << "\nItem id: " << items[i].id << endl;
+						cout << "Item name: " << items[i].itemName << endl;
+						cout << "Price: " << items[i].price << endl;
+						cout << "Seller: " << items[i].seller << endl;
+						cout << "Descriprion: " << items[i].description << endl;
+					}
+				}
+
+				break;
+			case 3:
+				cout << "Min Price: ";
+				cin >> minPrice;
+				cout << "Max Price: ";
+				cin >> maxPrice;
+				for (int i = 0; i < itemCount; i++)
+				{
+					if (items[i].isAproved == 1 && items[i].price >= minPrice && items[i].price <= maxPrice)
+					{
+						cout << "\nItem id: " << items[i].id << endl;
+						cout << "Item name: " << items[i].itemName << endl;
+						cout << "Price: " << items[i].price << endl;
+						cout << "Seller: " << items[i].seller << endl;
+						cout << "Descriprion: " << items[i].description << endl;
+					}
+				}
+
+				break;
+			case 4:
+
+				for (int i = 0; i < itemCount; i++)
+				{
+					for (int j = i + 1; j < itemCount; j++)
+					{
+						if (items[i].price > items[j].price)
+						{
+							temp = items[i].price;
+							items[i].price = items[j].price;
+							items[j].price = temp;
+						}
+					}
+				}
+
+				for (int i = 0; i < itemCount; i++)
+				{
+					if (items[i].isAproved == 1)
+					{
+						cout << "\nItem id: " << items[i].id << endl;
+						cout << "Item name: " << items[i].itemName << endl;
+						cout << "Price: " << items[i].price << endl;
+						cout << "Seller: " << items[i].seller << endl;
+						cout << "Descriprion: " << items[i].description << endl;
+					}
+				}
+
+				break;
+			case 5:
+
+				for (int i = 0; i < itemCount; i++)
+				{
+					for (int j = i + 1; j < itemCount; j++)
+					{
+						if (items[i].price < items[j].price)
+						{
+							temp = items[i].price;
+							items[i].price = items[j].price;
+							items[j].price = temp;
+						}
+					}
+				}
+
+				for (int i = 0; i < itemCount; i++)
+				{
+					if (items[i].isAproved == 1)
+					{
+						cout << "\nItem id: " << items[i].id << endl;
+						cout << "Item name: " << items[i].itemName << endl;
+						cout << "Price: " << items[i].price << endl;
+						cout << "Seller: " << items[i].seller << endl;
+						cout << "Descriprion: " << items[i].description << endl;
+					}
+				}
+
+
+				break;
+			case 9:
+				showMenu = false;
+				showItemsMenu();
+				break;
+
+		}
+	}
+}
+
 void editOrderMenu()
 {
 	fstream itemsTxt("items.txt");
 	ofstream itemsTmp("itemsTmp.txt");
-	string line, tokens[8],id,help;
+	string line, tokens[8], id, help;
 	int choice;
 	bool offerExist = false;
 	cout << "Id of the offer you want to edit: ";
@@ -542,14 +685,14 @@ void editOrderMenu()
 			if (line != "")
 			{
 				tokenize(line, tokens, '|');
-				if (tokens[0]==id)
+				if (tokens[0] == id)
 				{
 					switch (choice)
 					{
 						case 1:
 							cout << "The new name of the item: ";
 							cin >> help;
-							itemsTmp << tokens[0] << "|" << help<< "|" << tokens[2] << "|" << tokens[3] << "|" << tokens[4] << "|" << tokens[5] << "|" << endl;
+							itemsTmp << tokens[0] << "|" << help << "|" << tokens[2] << "|" << tokens[3] << "|" << tokens[4] << "|" << tokens[5] << "|" << endl;
 							offerExist = true;
 							break;
 						case 2:
@@ -603,6 +746,7 @@ void editOrderMenu()
 		}
 	}
 }
+
 void deleteItemMenu()
 {
 	int id;
@@ -677,10 +821,10 @@ void approveOffer(int id) {
 		while (!items.eof()) {
 			getline(items, line);
 			tokenize(line, tokens, '|');
-			if (id== atoi(tokens[0].c_str())&&tokens[5]!="1")
+			if (id == atoi(tokens[0].c_str()) && tokens[5] != "1")
 			{
 				offerExist = true;
-				itemsTmp<<id<<"|" << tokens[1] << "|" << tokens[2] << "|" << tokens[3] << "|" << tokens[4] << "|" << "1" << "|" << endl;
+				itemsTmp << id << "|" << tokens[1] << "|" << tokens[2] << "|" << tokens[3] << "|" << tokens[4] << "|" << "1" << "|" << endl;
 			}
 			else
 			{
@@ -693,13 +837,13 @@ void approveOffer(int id) {
 		{
 			if (remove("items.txt") == 0)
 			{
-				cout << "Approving offer 50% done"<<endl;
+				cout << "Approving offer 50% done" << endl;
 			}
 			else
 			{
 				cerr << "A wild error appeared: " << endl;
 			}
-			if (rename("itemsTmp.txt","items.txt") == 0)
+			if (rename("itemsTmp.txt", "items.txt") == 0)
 			{
 				cout << "Approving offer done!!!" << endl;
 			}
@@ -710,7 +854,7 @@ void approveOffer(int id) {
 		}
 		else
 		{
-			cout << "There is no offer with that id or the offer was already approved. Nothing happened."<<endl;
+			cout << "There is no offer with that id or the offer was already approved. Nothing happened." << endl;
 			remove("items.txt");
 			rename("itemsTmp.txt", "items.txt");
 		}
@@ -718,8 +862,8 @@ void approveOffer(int id) {
 }
 
 void manageOffersMenu() {
-	ITEM items[150],newItem[1];
-	int itemCount = 0, maxID,idForApprove;
+	ITEM items[150], newItem[1];
+	int itemCount = 0, maxID, idForApprove;
 	itemCount = inputDataInArray(items);
 	maxID = atoi(getIdFromFile().c_str());
 	bool offersMenu = true;
@@ -737,32 +881,32 @@ void manageOffersMenu() {
 
 		switch (choice)
 		{
-		case 1:
-			showAllOffers(items, itemCount);
-			break;
-		case 2:
-			addOfferMenu(items, itemCount, maxID);
-			break;
-		case 3:
-			deleteItemMenu();
-			break;
-		case 4:
-			editOrderMenu();
-			break;
-		case 5:
-			cout << "Type the ID of the offer you want to approve: ";
-			cin >> idForApprove;
-			approveOffer(idForApprove);
-			break;
-		case 9:
-			offersMenu = false;
-			adminMenu();
+			case 1:
+				showAllOffers(items, itemCount);
+				break;
+			case 2:
+				addOfferMenu(items, itemCount, maxID);
+				break;
+			case 3:
+				deleteItemMenu();
+				break;
+			case 4:
+				editOrderMenu();
+				break;
+			case 5:
+				cout << "Type the ID of the offer you want to approve: ";
+				cin >> idForApprove;
+				approveOffer(idForApprove);
+				break;
+			case 9:
+				offersMenu = false;
+				adminMenu();
 		}
 	}
 }
 
 void buyOffer() {
-	string line,tokens[10],	string ,adress, name, id;;
+	string line, tokens[10], string, adress, name, id;;
 	fstream items("items.txt");
 	ofstream requests("requests.txt", ios::app);
 	bool itemExist = false;
@@ -779,21 +923,21 @@ void buyOffer() {
 		{
 			getline(items, line);
 			tokenize(line, tokens, '|');
-			if (tokens[0]==id&&tokens[5]=="1")
+			if (tokens[0] == id && tokens[5] == "1")
 			{
 				itemExist = true;
-				requests << "Sent to " << name << "!!! Adress: " << adress << "!!! Item name : " << tokens[1] << "!!! Item price: " << tokens[2] << "!!! Item description: " << tokens[4]<<"\n";
+				requests << "Sent to " << name << "!!! Adress: " << adress << "!!! Item name : " << tokens[1] << "!!! Item price: " << tokens[2] << "!!! Item description: " << tokens[4] << "\n";
 			}
 		}
 		items.close();
 		if (itemExist)
 		{
-			cout << "Your purchase was succesful. The item will be sent to your adress. You will pay by cash on delivery. Thank you for your purchase"<<endl;
+			cout << "Your purchase was succesful. The item will be sent to your adress. You will pay by cash on delivery. Thank you for your purchase" << endl;
 			deleteItem(atoi(id.c_str()));
 		}
 		else
 		{
-			cout << "There is no item for selling with such an ID"<<endl;
+			cout << "There is no item for selling with such an ID" << endl;
 		}
 	}
 }
@@ -801,7 +945,7 @@ void buyOffer() {
 bool showItemsMenu()
 {
 	ITEM items[150];
-	int itemCount = 0,maxID;
+	int itemCount = 0, maxID;
 	itemCount = inputDataInArray(items);
 	maxID = atoi(getIdFromFile().c_str());
 	char input;
@@ -814,7 +958,7 @@ bool showItemsMenu()
 		cout << endl;
 		cout << "                       Menu:\n" << endl;
 		cout << "                 1. Show all offers" << endl;
-		cout << "                 2. Sort Items By Criterias" << endl;
+		cout << "                 2. Show Items By Criterias" << endl;
 		cout << "                 3. Buy offers" << endl;
 		cout << "                 4. Add offers" << endl;
 		cout << "                 9. Back\n\n";
@@ -824,28 +968,29 @@ bool showItemsMenu()
 
 		switch (input)
 		{
-		case '1':
-			showAprovedOffers(items, itemCount);
-			break;
-		case '2':
-			break;
-		case '3':
-			buyOffer();
-			break;
-		case '4':
-			addOfferMenu(items, itemCount, maxID);
-			break;
-		case '9':
-			OfferMenu = false;
-			Menu();
-			break;
-		default: while (input != '1' && input != '2' && input != '3' && input != '9')
-		{
-			cout << "Invalid option, try again: ";
-			cin >> input;
-			cout << endl;
-		}
-				 break;
+			case '1':
+				showAprovedOffers(items, itemCount);
+				break;
+			case '2':
+				sortItemsMenu(items, itemCount);
+				break;
+			case '3':
+				buyOffer();
+				break;
+			case '4':
+				addOfferMenu(items, itemCount, maxID);
+				break;
+			case '9':
+				OfferMenu = false;
+				Menu();
+				break;
+			default: while (input != '1' && input != '2' && input != '3' && input != '9')
+			{
+				cout << "Invalid option, try again: ";
+				cin >> input;
+				cout << endl;
+			}
+				   break;
 		}
 	}
 	return true;
@@ -912,6 +1057,7 @@ void Register() {
 	cout << endl;
 	myfile << endl << username << "," << password << ",0,";
 	myfile.close();
+	showItemsMenu();
 }
 
 void login() {
