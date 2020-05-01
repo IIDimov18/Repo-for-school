@@ -541,7 +541,7 @@ bool showItemsMenu(ITEM* items, int& itemCount, int& maxId)
 {
 	char input;
 
-	cout << "___" << endl;
+	cout << "___________________________________________________\n" << endl;
 	cout << endl;
 	cout << "\n   |=========== Wlcome to our shop ===========|\n" << endl;
 	cout << endl;
@@ -646,7 +646,7 @@ void Register() {
 	myfile.close();
 }
 
-void login(ITEM* items, int& itemCount) {
+void login(ITEM* items, int& itemCount,int& maxID) {
 	string username, password, result = "invalidAccount";
 	char character;
 	cout << "Do you have existing account[Y/N]: ";
@@ -680,7 +680,8 @@ void login(ITEM* items, int& itemCount) {
 		}
 		else
 		{
-			//showItemsMenu();
+
+			showItemsMenu(items,itemCount, maxID);
 		}
 	}
 	else if (character == 'N')
@@ -714,7 +715,7 @@ bool Menu(ITEM* items, int& itemCount, int& maxId) {
 				return false;
 				break;
 			case '1':
-				login(items, itemCount); return false;
+				login(items, itemCount,maxId); return false;
 				break;
 			case '2':
 				Register(); return true;
@@ -743,33 +744,17 @@ bool Menu(ITEM* items, int& itemCount, int& maxId) {
 
 int main()
 {
+	system("color 03");
+
 	string stringID = getIdFromFile();
+
 	int maxId = atoi(stringID.c_str());
+
 	ITEM items[200];
+
 	int itemCount = inputDataInArray(items);
 
-	/*getline(cin, nov.itemName);
-	cin >> nov.price;
-	cin.ignore();
-	getline(cin, nov.seller);
-	getline(cin, nov.description);
-
-	insertItemInArray(items, itemCount, nov, maxId);
-	//initItemsInArray(items, itemCount,maxId);
-	writeDataIntoFile(items, itemCount);
-
-	/*string line;
-	ifstream myfile("data.txt");
-	if (myfile.is_open())
-	{
-		while (myfile.good())
-		{
-			getline(myfile, line);
-			cout << line << endl;
-		}
-		myfile.close();
-	}*/
-
 	Menu(items, itemCount, maxId);
+
 	return 0;
 }
