@@ -59,8 +59,8 @@ int tokenize(string line, string* results, char delimiter) {
 	}
 	return counter;
 }
-bool adminMenu(ITEM*, int&);
-void manageAccounts(ITEM* items, int& itemCount)
+bool adminMenu();
+void manageAccounts()
 {
 	int choice;
 	ifstream myfile("acc.txt");
@@ -328,7 +328,7 @@ void manageAccounts(ITEM* items, int& itemCount)
 			case 9:
 				myfile.close();
 				accManagmentMenu = false;
-				adminMenu(items, itemCount);
+				adminMenu();
 
 				break;
 
@@ -339,6 +339,7 @@ void manageAccounts(ITEM* items, int& itemCount)
 	myfile.close();
 }
 
+bool Menu();
 
 /* ACCOUNTS */
 
@@ -525,21 +526,6 @@ int inputDataInArray(ITEM* items)
 
 
 /* Menus */
-void buyOfferMenu(ITEM*items)
-{
-	int id;
-	BUY seller;
-	cout << "Enter id of the product: " << endl;
-	cin >> id;
-	cout << "Enter your first name: " << endl;
-	cin >> seller.firstName;
-	cout << "Enter your last name" << endl;
-	cin >> seller.lastName;
-	cout << "Enter your adress" << endl;
-	cin >> seller.adress;
-
-}
-
 void deleteItemMenu(ITEM* items, int& itemCount)
 {
 	int id;
@@ -550,7 +536,6 @@ void deleteItemMenu(ITEM* items, int& itemCount)
 
 void showAprovedOffers(ITEM* items, int& itemCount)
 {
-
 	for (int i = 0; i < itemCount; i++)
 	{
 		if (items[i].isAproved == 1)
@@ -573,6 +558,7 @@ void aproveRecordMenu(ITEM* items, int& itemCount)
 
 }
 
+
 void showAllOffers(ITEM* items, int& itemCount)
 {
 
@@ -586,36 +572,6 @@ void showAllOffers(ITEM* items, int& itemCount)
 		cout << "Description: " << items[i].description << endl;
 		cout << "Is Aproved:" << items[i].isAproved << endl;
 	}
-}
-
-void manageOffersMenu(ITEM* items, int& itemCount) {
-	cout << "\n 1. Show all offers" << endl;
-	cout << "2. Add offer:" << endl;
-	cout << "3. Delete offer:" << endl;
-	cout << "4. Edit offer" << endl;
-	cout << "5. Aprove offer" << endl;
-	cout << "7. " << endl;
-	int choice;
-	cin >> choice;
-
-	switch (choice)
-	{
-		case 1:
-			showAllOffers(items, itemCount);
-			break;
-		case 2:
-
-			break;
-		case 3:
-			deleteItemMenu(items, itemCount);
-			break;
-		case 4:
-
-			break;
-		case 5:
-
-	}
-
 }
 
 void addOfferMenu(ITEM* items, int& itemCount, int& maxId)
@@ -635,42 +591,139 @@ void addOfferMenu(ITEM* items, int& itemCount, int& maxId)
 	insertItemInArray(items, itemCount, newItem, maxId);
 }
 
-bool showItemsMenu(ITEM* items, int& itemCount, int& maxId)
-{
-	char input;
-
-	cout << "___________________________________________________\n" << endl;
-	cout << endl;
-	cout << "\n   |=========== Wlcome to our shop ===========|\n" << endl;
-	cout << endl;
-	cout << "                       Menu:\n" << endl;
-	cout << "                 1. Show all offers" << endl;
-	cout << "                 2. Sort Items By Criterias" << endl;
-	cout << "                 3. Buy offers" << endl;
-	cout << "                 4. Add offers" << endl;
-	cout << "                 9. Back\n\n";
-	cout << "\nChoose an option: ";
-	cin >> input;
-	cout << endl;
-
-	switch (input)
+void approveOffer(int id) {
+	ifstream items("items.txt");
+	ofstream itemsTmp("itemsTmp.txt");
+	string line, tokens[6];
+	bool offerExist = false;
+	if (items.is_open())
 	{
+		while (!items.eof()) {
+			getline(items, line);
+			tokenize(line, tokens, '|');
+			if (id== atoi(tokens[0].c_str())&&tokens[5]!="1")
+			{
+				offerExist = true;
+				itemsTmp<<id<<"|" << tokens[1] << "|" << tokens[2] << "|" << tokens[3] << "|" << tokens[4] << "|" << "1" << "|" << endl;
+			}
+			else
+			{
+				itemsTmp << tokens[0] << "|" << tokens[1] << "|" << tokens[2] << "|" << tokens[3] << "|" << tokens[4] << "|" << tokens[5] << "|" << endl;
+			}
+		}
+		items.close();
+		itemsTmp.close();
+		if (offerExist)
+		{
+			if (remove("items.txt") == 0)
+			{
+				cout << "Approving offer 50% done"<<endl;
+			}
+			else
+			{
+				cerr << "A wild error appeared: " << endl;
+			}
+			if (rename("itemsTmp.txt","items.txt") == 0)
+			{
+				cout << "Approving offer done!!!" << endl;
+			}
+			else
+			{
+				cerr << "A wild error appeared: " << endl;
+			}
+		}
+		else
+		{
+			cout << "There is no offer with that id or the offer was already approved. Nothing happened."<<endl;
+			remove("items.txt");
+			rename("itemsTmp.txt", "items.txt");
+		}
+	}
+}
+
+void manageOffersMenu() {
+	ITEM items[150],newItem[1];
+	int itemCount = 0, maxID,idForApprove;
+	itemCount = inputDataInArray(items);
+	maxID = atoi(getIdFromFile().c_str());
+	bool offersMenu = true;
+	while (offersMenu)
+	{
+		cout << "\n1. Show all offers" << endl;
+		cout << "2. Add offer:" << endl;
+		cout << "3. Delete offer:" << endl;
+		cout << "4. Edit offer" << endl;
+		cout << "5. Aprove offer" << endl;
+		cout << "9. Go back" << endl;
+		cout << "Your choice: ";
+		int choice;
+		cin >> choice;
+
+		switch (choice)
+		{
+		case 1:
+			showAllOffers(items, itemCount);
+			break;
+		case 2:
+			addOfferMenu(items, itemCount, maxID);
+			break;
+		case 3:
+			deleteItemMenu(items, itemCount);
+			break;
+		case 4:
+
+			break;
+		case 5:
+			cout << "Type the ID of the offer you want to approve: ";
+			cin >> idForApprove;
+			approveOffer(idForApprove);
+			break;
+		case 9:
+			offersMenu = false;
+			adminMenu();
+		}
+	}
+}
+
+bool showItemsMenu()
+{
+	ITEM items[150];
+	int itemCount = 0,maxID;
+	itemCount = inputDataInArray(items);
+	maxID = atoi(getIdFromFile().c_str());
+	char input;
+	bool OfferMenu = true;
+	while (OfferMenu)
+	{
+		cout << "___________________________________________________\n" << endl;
+		cout << endl;
+		cout << "\n   |=========== Welcome to our shop ===========|\n" << endl;
+		cout << endl;
+		cout << "                       Menu:\n" << endl;
+		cout << "                 1. Show all offers" << endl;
+		cout << "                 2. Sort Items By Criterias" << endl;
+		cout << "                 3. Buy offers" << endl;
+		cout << "                 4. Add offers" << endl;
+		cout << "                 9. Back\n\n";
+		cout << "\nChoose an option: ";
+		cin >> input;
+		cout << endl;
+
+		switch (input)
+		{
 		case '1':
 			showAprovedOffers(items, itemCount);
-			return true;
 			break;
 		case '2':
-			return true;
 			break;
-		case '3': 
-			
-			return true;
+		case '3':
 			break;
 		case '4':
-			addOfferMenu(items, itemCount, maxId);
-			return true;
+			addOfferMenu(items, itemCount, maxID);
 			break;
-		case '9': return false;
+		case '9':
+			OfferMenu = false;
+			Menu();
 			break;
 		default: while (input != '1' && input != '2' && input != '3' && input != '9')
 		{
@@ -678,12 +731,13 @@ bool showItemsMenu(ITEM* items, int& itemCount, int& maxId)
 			cin >> input;
 			cout << endl;
 		}
-			   break;
+				 break;
+		}
 	}
 	return true;
 }
 
-bool adminMenu(ITEM* items, int& itemCount)
+bool adminMenu()
 {
 	cout << "___________________________________________________\n" << endl;
 	cout << endl;
@@ -701,10 +755,10 @@ bool adminMenu(ITEM* items, int& itemCount)
 	switch (choice)
 	{
 		case 1:
-			manageAccounts(items, itemCount); return false;
+			manageAccounts(); return false;
 			break;
 		case 2:
-			manageOffersMenu(items, itemCount); return false;
+			manageOffersMenu(); return false;
 			break;
 		case 9: return false;
 
@@ -746,7 +800,7 @@ void Register() {
 	myfile.close();
 }
 
-void login(ITEM* items, int& itemCount, int& maxID) {
+void login() {
 	string username, password, result = "invalidAccount";
 	char character;
 	cout << "Do you have existing account[Y/N]: ";
@@ -776,12 +830,12 @@ void login(ITEM* items, int& itemCount, int& maxID) {
 		}
 		if (checkAcc(username, password) == "1")
 		{
-			adminMenu(items, itemCount);
+			adminMenu();
 		}
 		else
 		{
 
-			showItemsMenu(items, itemCount, maxID);
+			showItemsMenu();
 		}
 	}
 	else if (character == 'N')
@@ -791,7 +845,7 @@ void login(ITEM* items, int& itemCount, int& maxID) {
 	}
 }
 
-bool Menu(ITEM* items, int& itemCount, int& maxId) {
+bool Menu() {
 	char input;
 	bool whileCheck = true;
 
@@ -800,7 +854,6 @@ bool Menu(ITEM* items, int& itemCount, int& maxId) {
 	cout << "                       Menu:\n" << endl;
 	cout << "                   1. Login" << endl;
 	cout << "                   2. Register" << endl;
-	cout << "                   3. Show Offers" << endl;
 	cout << "                   9. Exit\n\n";
 	cout << "\nChoose an option: ";
 	cin >> input;
@@ -811,23 +864,20 @@ bool Menu(ITEM* items, int& itemCount, int& maxId) {
 		switch (input)
 		{
 			case 'k':
-				showItemsMenu(items, itemCount, maxId);
+				showItemsMenu();
 				return false;
 				break;
 			case '1':
-				login(items, itemCount, maxId); return false;
+				login(); return false;
 				break;
 			case '2':
 				Register(); return true;
 				break;
-			case '3':
-				showAprovedOffers(items, itemCount);
-				whileCheck = false;
 			case '9':
 				whileCheck = false;
 				break;
 			case 'A':
-				adminMenu(items, itemCount); return false;
+				adminMenu(); return false;
 				break;
 			default: while (input != '1' && input != '2' && input != '3' && input != '9' && input != 'k' && input != 'A')
 			{
@@ -847,15 +897,7 @@ int main()
 {
 	system("color 03");
 
-	string stringID = getIdFromFile();
-
-	int maxId = atoi(stringID.c_str());
-
-	ITEM items[200];
-
-	int itemCount = inputDataInArray(items);
-
-	Menu(items, itemCount, maxId);
+	Menu();
 
 	return 0;
 }
