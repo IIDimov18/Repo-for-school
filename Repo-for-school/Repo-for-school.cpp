@@ -525,6 +525,21 @@ int inputDataInArray(ITEM* items)
 
 
 /* Menus */
+void buyOfferMenu(ITEM*items)
+{
+	int id;
+	BUY seller;
+	cout << "Enter id of the product: " << endl;
+	cin >> id;
+	cout << "Enter your first name: " << endl;
+	cin >> seller.firstName;
+	cout << "Enter your last name" << endl;
+	cin >> seller.lastName;
+	cout << "Enter your adress" << endl;
+	cin >> seller.adress;
+
+}
+
 void deleteItemMenu(ITEM* items, int& itemCount)
 {
 	int id;
@@ -558,7 +573,6 @@ void aproveRecordMenu(ITEM* items, int& itemCount)
 
 }
 
-
 void showAllOffers(ITEM* items, int& itemCount)
 {
 
@@ -573,7 +587,6 @@ void showAllOffers(ITEM* items, int& itemCount)
 		cout << "Is Aproved:" << items[i].isAproved << endl;
 	}
 }
-
 
 void manageOffersMenu(ITEM* items, int& itemCount) {
 	cout << "\n 1. Show all offers" << endl;
@@ -649,7 +662,9 @@ bool showItemsMenu(ITEM* items, int& itemCount, int& maxId)
 		case '2':
 			return true;
 			break;
-		case '3': return true;
+		case '3': 
+			
+			return true;
 			break;
 		case '4':
 			addOfferMenu(items, itemCount, maxId);

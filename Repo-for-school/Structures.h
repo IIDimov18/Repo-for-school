@@ -21,3 +21,9 @@ struct USER
 	// ITEM itemsForSale[];
 	int id = 0;
 };
+
+struct BUY {
+	string firstName;
+	string lastName;
+	string adress;
+};
