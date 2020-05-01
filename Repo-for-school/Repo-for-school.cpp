@@ -519,7 +519,6 @@ void manageOffersMenu(ITEM* items, int& itemCount) {
 
 }
 
-
 void addOfferMenu(ITEM* items, int& itemCount, int& maxId)
 {
 	ITEM newItem;
