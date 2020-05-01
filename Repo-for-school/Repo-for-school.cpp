@@ -404,18 +404,11 @@ void updateItem(ITEM* items, ITEM newItem, int& itemCount, int& maxId) {
 	items[index] = newItem;
 }
 
-void deleteItem(ITEM* items, int& itemCount, int id) {
+void deleteItem(int id) {
 	fstream data("items.txt");
 	ofstream dataTmp("itemsTmp.txt");
 	string line, tokens[10];
 	bool offerExist = true;
-	int index = getItemIndexById(items, itemCount, id);
-	for (int i = index; i < itemCount - 1; i++)
-	{
-		items[i] = items[i + 1];
-	}
-	itemCount--;
-
 	if (data.is_open())
 	{
 		while (!data.eof())
@@ -526,12 +519,12 @@ int inputDataInArray(ITEM* items)
 
 
 /* Menus */
-void deleteItemMenu(ITEM* items, int& itemCount)
+void deleteItemMenu()
 {
 	int id;
 	cout << "ID of the offer you want to delete: ";
 	cin >> id;
-	deleteItem(items, itemCount, id);
+	deleteItem(id);
 }
 
 void showAprovedOffers(ITEM* items, int& itemCount)
@@ -668,7 +661,7 @@ void manageOffersMenu() {
 			addOfferMenu(items, itemCount, maxID);
 			break;
 		case 3:
-			deleteItemMenu(items, itemCount);
+			deleteItemMenu();
 			break;
 		case 4:
 
@@ -681,6 +674,43 @@ void manageOffersMenu() {
 		case 9:
 			offersMenu = false;
 			adminMenu();
+		}
+	}
+}
+
+void buyOffer() {
+	string line,tokens[10],	string ,adress, name, id;;
+	fstream items("items.txt");
+	ofstream requests("requests.txt", ios::app);
+	bool itemExist = false;
+	cout << "ID of the product you want to buy: ";
+	cin >> id;
+	cout << "Adress: ";
+	cin.ignore();
+	getline(cin, adress);
+	cout << "Name: ";
+	cin >> name;
+	if (items.is_open())
+	{
+		while (!items.eof())
+		{
+			getline(items, line);
+			tokenize(line, tokens, '|');
+			if (tokens[0]==id&&tokens[5]=="1")
+			{
+				itemExist = true;
+				requests << "Sent to " << name << "!!! Adress: " << adress << "!!! Item name : " << tokens[1] << "!!! Item price: " << tokens[2] << "!!! Item description: " << tokens[4]<<"\n";
+			}
+		}
+		items.close();
+		if (itemExist)
+		{
+			cout << "Your purchase was succesful. The item will be sent to your adress. You will pay by cash on delivery. Thank you for your purchase"<<endl;
+			deleteItem(atoi(id.c_str()));
+		}
+		else
+		{
+			cout << "There is no item for selling with such an ID"<<endl;
 		}
 	}
 }
@@ -717,6 +747,7 @@ bool showItemsMenu()
 		case '2':
 			break;
 		case '3':
+			buyOffer();
 			break;
 		case '4':
 			addOfferMenu(items, itemCount, maxID);
