@@ -1109,7 +1109,7 @@ bool Menu() {
 	char input;
 	bool whileCheck = true;
 
-	cout << "\n|============== Welcome to Digi Bitak ==============|\n" << endl;
+	cout << "\n|============== Welcome to DigiBitak ==============|\n" << endl;
 	cout << endl;
 	cout << "                       Menu:\n" << endl;
 	cout << "                   1. Login" << endl;
